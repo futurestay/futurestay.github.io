@@ -16,7 +16,7 @@
 	var maxBookPerYear = 121;
 	var hrSpentWithOutTechnology = 1.236667;
 	var employeeCost = 25;
-	var	haSelect = 0;
+	var	haSelect = 1;
 	var	bcSelect = 0;
 	var	exSelect = 0;
 	var	airSelect = 0;
@@ -91,7 +91,7 @@
 	}
 
 	$(document).ready(function(){
-		 $(".rec-hover").mouseover(function(){
+		$(".rec-hover").mouseover(function(){
         $( ".tooltip-box" ).show();
 		});
 		$(".rec-hover").mouseout(function(){
@@ -186,6 +186,7 @@
 			},
 		});
 		$('#propertyCount').find('.ui-slider-handle').html('<div class="sliderControl-label v-labelCurrent">1</div>');
+		calculateTotalHoursWithCost();
 	});
   </script>
   <style type="text/css">
@@ -255,7 +256,7 @@
 			<div class="col-sm-3 col-xs-12">
 				<p class="text-right text-xs-left">Hospitality</p>
 				<h1 class="text-right text-xs-left"><span class="bold hospitalityHours">0</span></h1>
-				<p class="text-right text-xs-left"><b>hour spent</b></p>
+				<p class="text-right text-xs-left"><b>hour gained</b></p>
 			</div>
 			<div class="clear P10"></div>
 			<div class="col-sm-12 col-xs-12">
@@ -366,7 +367,7 @@
 								<div class="col-sm-12">
 								<img src="img/homeaway_logo.png" width="35"/>
 								<label class="switch">
-								  <input type="checkbox" name="chkHomeaway" id="chkHomeway" value="1" />
+								  <input type="checkbox" name="chkHomeaway" id="chkHomeway" value="1" checked="checked" />
 								  <span class="slider round"></span>
 								</label>
 								<img src="img/bookingcom_logo.png" width="35"/>

@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Interactive Sales Tool</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="js/jquery_ui/jquery-ui.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="css/bootstrap.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link href="css/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+  <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+  <script type="text/javascript" src="js/jquery_ui/jquery-ui.min.js"></script>
+  <script type="text/javascript" src="js/jquery.ui.touch-punch.min.js"></script>
+  
+  <script type="text/javascript">
+	var maxBookPerYear = 121;
+	var hrSpentWithOutTechnology = 1.24;
+	var employeeCost = 25;
+	var	haSelect = 0;
+	var	bcSelect = 0;
+	var	exSelect = 0;
+	var	airSelect = 0;
+	var noTechnology = 1;
+	var channelManager = 0.71;
+	var smartConnection = 0.11;
+	var baseOccupyRate = 70;
+	function calculateTotalHoursWithCost()
+	{
+		var effectiveRate =  baseOccupyRate + ((haSelect+bcSelect+exSelect+airSelect)*4);
+		console.log("Effective Rate: " + effectiveRate);
+		var resPerPropertyPerYear = (maxBookPerYear * effectiveRate) / 100;
+		console.log("Reservation Per property: " + resPerPropertyPerYear);
+		var hourSpentPerProperty = hrSpentWithOutTechnology * resPerPropertyPerYear;
+		console.log('Hour spent per property: ' + hourSpentPerProperty);
+		var channelSelected = (haSelect+bcSelect+exSelect+airSelect);
+		if(channelSelected == 0){
+			alert('Please select any of site listing');
+			return;
+		}
+		var channelPercentage =  (100 / channelSelected) / 100;
+		console.log('Channel Percentage: ' + channelPercentage);
+		var haHourSpent = (haSelect * channelPercentage) * hourSpentPerProperty;
+		var bcHourSpent = (bcSelect * channelPercentage) * hourSpentPerProperty;
+		var exHourSpent = (exSelect * channelPercentage) * hourSpentPerProperty;
+		var airHourSpent = (airSelect * channelPercentage) * hourSpentPerProperty;
+		var totalHoursSpent = haHourSpent + bcHourSpent + exHourSpent + airHourSpent;
+		var totalProperties = $('#txtPropoertyCount').val();
+		var maxHourSpentYear = totalProperties * totalHoursSpent;
+		var totalCostPerYear = maxHourSpentYear * employeeCost;
+		var gainPercent;
+		var channelSelect = $('#txtChannelSelect').val();
+		var hospitalitySliverVal = 0;
+		if(channelSelect == 0){
+			gainPercent = noTechnology;
+			hospitalitySliverVal = 0;
+			$('#slider_1').removeClass('medium').removeClass('large');
+		} else if(channelSelect == 1){
+			gainPercent = channelManager;
+			hospitalitySliverVal = 85;
+			$('#slider_1').addClass('medium').removeClass('large');
+		} else {
+			gainPercent = smartConnection;
+			hospitalitySliverVal = 100;
+			$('#slider_1').removeClass('medium').addClass('large');
+		}
+		var adminHours = maxHourSpentYear * gainPercent;
+		var budgetSpent = totalCostPerYear * gainPercent;
+		var remainHours = Math.round(maxHourSpentYear - adminHours);
+		var recoverBudget = totalCostPerYear - budgetSpent;
+		$('.adminHours').text(Math.round(adminHours));
+		$('.hospitalityHours').text(Math.round(remainHours));
+		$('.adminCost').text(addCommas(budgetSpent.toFixed(2)));
+		$('.recoverCost').text(addCommas(recoverBudget.toFixed(2)));
+		console.log('Admin Hours: ' + adminHours);
+		console.log('Admin Cost: $' + budgetSpent);
+		console.log('Gain Hours: ' + remainHours);
+		console.log('Gain Cost: $' + recoverBudget);
+		$('#slider_1').slider( "value", hospitalitySliverVal);
+	}
+	function addCommas(nStr)
+	{
+		nStr += '';
+		x = nStr.split('.');
+		x1 = x[0];
+		x2 = x.length > 1 ? '.' + x[1] : '';
+		var rgx = /(\d+)(\d{3})/;
+		while (rgx.test(x1)) {
+			x1 = x1.replace(rgx, '$1' + ',' + '$2');
+		}
+		return x1 + x2;
+	}
+
+	$(document).ready(function(){
+		 $(".rec-hover").mouseover(function(){
+        $( ".tooltip-box" ).show();
+		});
+		$(".rec-hover").mouseout(function(){
+			$( ".tooltip-box" ).hide();
+		});
+
+		$(".rec-hover2").mouseover(function(){
+			$( ".tooltip-box2" ).show();
+		});
+		$(".rec-hover2").mouseout(function(){
+			$( ".tooltip-box2" ).hide();
+		});
+
+		$(".rec-hover3").click(function(){
+			$( ".tooltip-box3" ).show();
+		});
+		$(".btn-close").click(function(){
+			$( ".tooltip-box3" ).hide();
+		});
+		$('#chkHomeway').change(function(){
+			if($(this).is(':checked')){
+				haSelect = 1;
+			} else {
+				haSelect = 0;
+			}
+			console.log('HA Select: '+ haSelect );
+			calculateTotalHoursWithCost();
+		});
+		$('#chkBooking').change(function(){
+			if($(this).is(':checked')){
+				bcSelect = 1;
+			} else {
+				bcSelect = 0;
+			}
+			console.log('BC Select: '+ bcSelect );
+			calculateTotalHoursWithCost();
+		});
+		$('#chkAirbnb').change(function(){
+			if($(this).is(':checked')){
+				airSelect = 1;
+			} else {
+				airSelect = 0;
+			}
+			console.log('Air Select: '+ airSelect );
+			calculateTotalHoursWithCost();
+		});
+		$('#chkExpedia').change(function(){
+			if($(this).is(':checked')){
+				exSelect = 1;
+			} else {
+				exSelect = 0;
+			}
+			console.log('Expedia Select: '+ exSelect );
+			calculateTotalHoursWithCost();
+		});
+		$("#slider_1").slider({
+			min: 0,
+			max: 100,
+			step: 5,
+			range: "min",
+			value: 0,
+		});
+		$("#slider_1").slider('disable');
+		$('#propertyCount').slider({
+			min: 1,
+			max: 100,
+			step: 1,
+			value: 1,
+			animate: 'true',
+			range: "min",
+			slide: function(event, ui){
+				$('#txtPropoertyCount').val(ui.value);
+				if(haSelect+bcSelect+exSelect+airSelect > 0){
+					calculateTotalHoursWithCost();
+				}
+				$(this).find('.ui-slider-handle').html('<div class="sliderControl-label v-labelCurrent">'+ui.value+'</div>');
+			},
+			change: function(event, ui){
+				$('#txtPropoertyCount').val(ui.value);
+				$(this).find('.ui-slider-handle').html('<div class="sliderControl-label v-labelCurrent">'+ui.value+'</div>');
+			}
+		});
+		$('#channelManager').slider({
+			min: 0,
+			max: 2,
+			animate: 'true',
+			slide: function(event, ui){
+				$('#txtChannelSelect').val(ui.value);
+				if(haSelect+bcSelect+exSelect+airSelect > 0){
+					calculateTotalHoursWithCost();
+				}
+			},
+		});
+		$('#propertyCount').find('.ui-slider-handle').html('<div class="sliderControl-label v-labelCurrent">1</div>');
+	});
+  </script>
+  <style type="text/css">
+    #slider_1{ height: 75px; border-radius: 10px; border: none !important; }
+	
+	#slider_1.ui-slider-horizontal { background: #ed6b77;  background: linear-gradient(-90deg,  #ed6b77, #f6a4ad); border-radius:10px; }
+	#slider_1 .ui-slider-range-min { background: #0cccd1 url("img/sparkles_medium.png") no-repeat right; border-radius:10px; }
+	
+	#slider_1.medium {background: #0cccd1 no-repeat right; border-radius:10px; }
+	#slider_1.medium .ui-slider-range-min {background: #ed6b77;  background: linear-gradient(-90deg,  #ed6b77, #f6a4ad); border-radius:10px; }
+	
+	#slider_1.ui-state-disabled{ opacity: 1 }
+	#slider_1 .ui-slider-handle {
+		background: transparent;
+		height: 100px;
+		border: none !important;
+		outline: none !important;
+	}
+	#propertyCount {border: none !important;  border-radius: 10px; background: #55586f; }
+	#propertyCount .ui-slider-range-min { background: #5bf7d8; background: linear-gradient(90deg, #5bf7d8, #26cad3);  border-radius: 10px;}
+	
+	#propertyCount .ui-slider-handle {
+		background: transparent url(img/circle_selector.png) no-repeat scroll 50% 50%;
+		width: 35px;
+		height: 35px;
+		top: -12px;
+		border: none !important;
+		outline: none !important;
+	}
+	#channelManager { background: #555a70; background: linear-gradient(90deg, #555a70, #5bf7d8, #26cad3); border-radius: 10px;  border: none !important; }
+	#channelManager .ui-slider-handle {
+		background: transparent url(img/circle_selector.png) no-repeat scroll 50% 50%;
+		width: 35px;
+		height: 35px;
+		top: -12px;
+		border: none !important;
+		outline: none !important;
+	}
+	#channelManager .ui-slider-range-min { background: #555a70; background: linear-gradient(90deg, #555a70, #5bf7d8, #26cad3);  border-radius: 10px;}
+	.sliderControl-label{
+		position: absolute;
+		text-align: center;
+		width: 100%;
+		top: 8px;
+		font-size:12px;
+		font-weight: bold;
+	}
+	.bold { font-weight : bold;}
+  </style>
+</head>
+<body style="background:#fafafa;">
+<input type="hidden" name="txtPropoertyCount" id="txtPropoertyCount" value="1" />
+<input type="hidden" name="txtChannelSelect" id="txtChannelSelect" value="0" />
+<div class="container">
+<div class="col-sm-8 col-sm-offset-1" style="background:#fff;border-radius:20px;margin-top:60px;padding:40px;">
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="col-sm-3 col-xs-12">
+			<p>Administrative</p>
+				<h1><span class="bold adminHours">0</span></h1>
+				<p><b>hour spent</b></p>
+			</div>
+			<div class="col-sm-6 col-xs-12">
+				<h3 align="center" class="text-xs-left"><b>What's Your Yearly <br> Hospitality Opportunity?</b></h3>
+				<div class="clear P5"></div>
+			</div>
+			<div class="col-sm-3 col-xs-12">
+				<p class="text-right text-xs-left">Hospitality</p>
+				<h1 class="text-right text-xs-left"><span class="bold hospitalityHours">0</span></h1>
+				<p class="text-right text-xs-left"><b>hour spent</b></p>
+			</div>
+			<div class="clear P10"></div>
+			<div class="col-sm-12 col-xs-12">
+				<div id="slider_1"></div>
+			</div>
+		</div>
+	</div>
+	<div class="clear P10"></div>
+	<div class="row">
+		<div class="col-sm-6 col-xs-12">
+				<div class="col-sm-12 col-xs-12">
+				<p><b>Administrative Cost</b></p>
+				</div>
+				<div class="clear P5"></div>
+				<div class="col-sm-6 col-xs-12">
+				
+				<p class="text-gray"><b>Budget Spent</b></p>
+					<h4><span class="bold">$<span class="adminCost">0</span></span></h4>
+				</div>
+				<div class="col-sm-6 col-xs-12">
+					<p class="text-gray"><b>Recurring Tasks</b></p>
+					<h4><b>0 <span class="rec-hover" style="cursor:pointer"><i class="fa fa-question-circle"></i></span></b></h4>
+					<div class="clear P5"></div>
+					<div class="tooltip-box">
+					<p class="text-center"><b>Reoccurring Tasks</b></p>
+					<div class="clear P5"></div>
+					<div class="col-sm-6 col-xs-6">
+						<p class="text-gray">Cancellations</p>
+						<p class="text-gray">Refunds</p>
+						<p class="text-gray">Charge Backs</p>
+						<p class="text-gray">RSVP Modifications</p>
+						<p class="text-gray">Check in emails</p>
+						<p class="text-gray">Charging Credit Cards</p>
+					</div>
+					<div class="col-sm-6 col-xs-6">
+						<p class="text-gray">Faild transaction</p>
+						<p class="text-gray">Balance payment</p>
+						<p class="text-gray">Paying Channel Commissions</p>
+						<p class="text-gray">Syncing Calendars</p>
+						<p class="text-gray">Update Property Information</p>
+					</div>
+					</div>
+				</div>		
+		</div>
+		<div class="col-sm-6 col-xs-12">
+			<div class="col-sm-12 col-xs-12">
+			<p class="text-right text-xs-left"><b>Hospitality Gain</b></p>
+			</div>
+			<div class="clear P5"></div>
+			<div class="col-sm-6 col-xs-12">
+				<p class="text-right text-gray text-xs-left"><b>New Opportunities</b></p>
+				<h4 class="text-right text-xs-left"><b><span class="rec-hover2" style="cursor:pointer"><i class="fa fa-question-circle"></i></span> <span style="color:#4cebd6;">0</span></b></h4>
+				<div class="tooltip-box2">
+				<p class="text-center text-xs-left"><b>New Opportunities</b></p>
+				<div class="clear P5"></div>
+				<div class="col-sm-6 col-xs-6">
+					<p class="text-gray">Welcoming Guests</p>
+					<p class="text-gray">Handling welcome baskets</p>
+					<p class="text-gray">Get better property photos</p>
+					<p class="text-gray">Writing a vacation blog</p>
+				</div>
+				<div class="col-sm-6 col-xs-6">
+					<p class="text-gray">Create new ad campaign</p>
+					<p class="text-gray">Upgrading amenities</p>
+					<p class="text-gray">Expand the property</p>
+					<p class="text-gray">Reply to reviews</p>
+				</div>
+				</div>
+			</div>
+			<div class="col-sm-6 col-xs-12">
+			
+			<p class="text-right text-gray text-xs-left"><b>Recovered Budget</b></p>
+				<h4 class="text-right text-xs-left"><span class="bold">$<span class="recoverCost">0</span></span></h4>
+			</div>
+				
+		</div>
+	</div>
+	<div class="clear P10"></div>
+	<div class="clear P10"></div>
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="col-sm-12">
+				<div  style="background:#2a2c37;border-radius:10px;padding-bottom:15px;position:relative;">
+						<div class="row">
+							<div class="col-sm-12">
+								<div class="col-sm-12">
+									<h3 class="text-center"  style="color:#d6d6d6;font-size:16px;margin-top: 12px;"><b>Business Settings <span class="rec-hover3" style="cursor:pointer"><i class="fa fa-question-circle" style="position:absolute;right:15px;top:15px;"></i></span></b></h3>
+								</div>
+							</div>
+						</div>
+						<div class="clear P10"></div>
+						<div class="row">
+							<div class="col-sm-5 col-xs-12">
+									<div class="col-sm-12">
+									<p style="color:#d6d6d6;"><b>Number of Properties</b></p>
+									</div>
+									<div class="clear P10"></div>
+									<div class="col-sm-12">
+									<div id="propertyCount"></div>
+									</div>
+									<div class="P5"></div>									
+							</div>
+							<div class="col-sm-7 col-xs-12">
+								<div class="col-sm-12">
+								<p class="" style="color:#d6d6d6;"><b>Listing Sites</b></p>
+								</div>
+								<div class="clear P5"></div>
+								<div class="col-sm-12">
+								<img src="img/homeaway_logo.png" width="35"/>
+								<label class="switch">
+								  <input type="checkbox" name="chkHomeaway" id="chkHomeway" value="1" />
+								  <span class="slider round"></span>
+								</label>
+								<img src="img/bookingcom_logo.png" width="35"/>
+								<label class="switch">
+								  <input type="checkbox" name="chkBooking" id="chkBooking" value="1" />
+								  <span class="slider round"></span>
+								</label>
+								<img src="img/airbnb_logo.png" width="35"/>
+								<label class="switch">
+								  <input type="checkbox" name="chkAirbnb" id="chkAirbnb" value="1" />
+								  <span class="slider round"></span>
+								</label>
+								<img src="img/expedia_logo.png" width="35"/>
+								<label class="switch">
+								  <input type="checkbox" name="chkExpedia" id="chkExpedia" value="1" />
+								  <span class="slider round"></span>
+								</label>
+								</div>	
+							</div>
+						</div>
+						<div class="clear P10"></div>
+						<div class="row">
+							<div class="col-sm-4 col-xs-4">
+									<div class="col-sm-12 col-xs-12">
+									<p style="color:#55586f;"><b>No Channel Manager</b></p>
+									</div>
+							</div>
+							<div class="col-sm-4 col-xs-4">
+									<div class="col-sm-12 col-xs-12">
+									<p style="color:#55586f;" class="text-center"><b>Channel Manager</b></p>
+									</div>
+							</div>
+							<div class="col-sm-4 col-xs-4">
+									<div class="col-sm-12 col-xs-12">
+									<p style="color:#d6d6d6;text-align:right;" ><b>Smart Connections</b></p>
+									</div>
+							</div>
+						</div>
+						<div class="tooltip-box3">
+						  <h3 style="color:#717070;font-size:16px;margin-bottom: 12px;margin:0px;" class="text-right"><b><span class="btn-close" style="cursor:pointer;">X</span></b></h3>
+						  <h3 style="color:#000;font-size:14px;margin-bottom: 15px;margin-top:0px;"><b>Objective</b></h3>
+						  <p style="color:#717070;font-size:14px;">Select your business settings or click around to see your <br /> hospitality opportunities.</p>
+						</div>
+						<div class="clear P10"></div>
+						<div class="col-sm-10 col-xs-10 col-sm-offset-1 col-xs-offset-1" style="">
+						
+						<div id="channelManager"></div>
+						
+						</div>
+						<div class="clear P10"></div>
+			</div>
+		</div>
+	</div>
+	</div>
+</div>
+</div>
+</body>
+</html>
+

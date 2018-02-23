@@ -26,25 +26,17 @@
 	var baseOccupyRate = 70;
 	function calculateTotalHoursWithCost()
 	{
-		var effectiveRate =  baseOccupyRate + ((haSelect+bcSelect+exSelect+airSelect)*4);
-		console.log("Effective Rate: " + effectiveRate);
-		var resPerPropertyPerYear = (maxBookPerYear * effectiveRate) / 100;
-		console.log("Reservation Per property: " + resPerPropertyPerYear);
-		var hourSpentPerProperty = hrSpentWithOutTechnology * resPerPropertyPerYear;
-		console.log('Hour spent per property: ' + hourSpentPerProperty);
 		var channelSelected = (haSelect+bcSelect+exSelect+airSelect);
+		var effectiveRate =  baseOccupyRate + (channelSelected * 4);
+		var resPerPropertyPerYear = (maxBookPerYear * effectiveRate) / 100;
+		var hourSpentPerProperty = hrSpentWithOutTechnology * resPerPropertyPerYear;
 		if(channelSelected == 0){
 			alert('Please select any of site listing');
 			return;
 		}
-		var channelPercentage =  (100 / channelSelected) / 100;
-		console.log('Channel Percentage: ' + channelPercentage);
-		var haHourSpent = (haSelect * channelPercentage) * hourSpentPerProperty;
-		var bcHourSpent = (bcSelect * channelPercentage) * hourSpentPerProperty;
-		var exHourSpent = (exSelect * channelPercentage) * hourSpentPerProperty;
-		var airHourSpent = (airSelect * channelPercentage) * hourSpentPerProperty;
-		var totalHoursSpent = haHourSpent + bcHourSpent + exHourSpent + airHourSpent;
-		var totalProperties = $('#txtPropoertyCount').val();
+		var channelPercentage =  (1 / channelSelected);
+		var totalHoursSpent = channelSelected * channelPercentage * hourSpentPerProperty;
+		var totalProperties = $('#txtPropertyCount').val();
 		var maxHourSpentYear = totalProperties * totalHoursSpent;
 		var totalCostPerYear = maxHourSpentYear * employeeCost;
 		var gainPercent;
@@ -71,10 +63,6 @@
 		$('.hospitalityHours').text(Math.round(remainHours));
 		$('.adminCost').text(addCommas(budgetSpent.toFixed(2)));
 		$('.recoverCost').text(addCommas(recoverBudget.toFixed(2)));
-		console.log('Admin Hours: ' + adminHours);
-		console.log('Admin Cost: $' + budgetSpent);
-		console.log('Gain Hours: ' + remainHours);
-		console.log('Gain Cost: $' + recoverBudget);
 		$('#slider_1').slider( "value", hospitalitySliverVal);
 	}
 	function addCommas(nStr)
@@ -117,7 +105,6 @@
 			} else {
 				haSelect = 0;
 			}
-			console.log('HA Select: '+ haSelect );
 			calculateTotalHoursWithCost();
 		});
 		$('#chkBooking').change(function(){
@@ -126,7 +113,6 @@
 			} else {
 				bcSelect = 0;
 			}
-			console.log('BC Select: '+ bcSelect );
 			calculateTotalHoursWithCost();
 		});
 		$('#chkAirbnb').change(function(){
@@ -135,7 +121,6 @@
 			} else {
 				airSelect = 0;
 			}
-			console.log('Air Select: '+ airSelect );
 			calculateTotalHoursWithCost();
 		});
 		$('#chkExpedia').change(function(){
@@ -144,7 +129,6 @@
 			} else {
 				exSelect = 0;
 			}
-			console.log('Expedia Select: '+ exSelect );
 			calculateTotalHoursWithCost();
 		});
 		$("#slider_1").slider({
@@ -163,14 +147,14 @@
 			animate: 'true',
 			range: "min",
 			slide: function(event, ui){
-				$('#txtPropoertyCount').val(ui.value);
+				$('#txtPropertyCount').val(ui.value);
 				if(haSelect+bcSelect+exSelect+airSelect > 0){
 					calculateTotalHoursWithCost();
 				}
 				$(this).find('.ui-slider-handle').html('<div class="sliderControl-label v-labelCurrent">'+ui.value+'</div>');
 			},
 			change: function(event, ui){
-				$('#txtPropoertyCount').val(ui.value);
+				$('#txtPropertyCount').val(ui.value);
 				$(this).find('.ui-slider-handle').html('<div class="sliderControl-label v-labelCurrent">'+ui.value+'</div>');
 			}
 		});
@@ -184,9 +168,24 @@
 					calculateTotalHoursWithCost();
 				}
 			},
+			change: function(event, ui){
+				$('#txtChannelSelect').val(ui.value);
+			}
 		});
 		$('#propertyCount').find('.ui-slider-handle').html('<div class="sliderControl-label v-labelCurrent">1</div>');
 		calculateTotalHoursWithCost();
+		$('#noChannel').click(function(){
+			$('#channelManager').slider('value', 0);
+			calculateTotalHoursWithCost();
+		});
+		$('#manageChannel').click(function(){
+			$('#channelManager').slider('value', 1);
+			calculateTotalHoursWithCost();
+		});
+		$('#smartConnection').click(function(){
+			$('#channelManager').slider('value', 2);
+			calculateTotalHoursWithCost();
+		});
 	});
   </script>
   <style type="text/css">
@@ -206,7 +205,7 @@
 		outline: none !important;
 	}
 	#propertyCount {border: none !important;  border-radius: 10px; background: #55586f; }
-	#propertyCount .ui-slider-range-min { background: #5bf7d8; background: linear-gradient(90deg, #5bf7d8, #26cad3);  border-radius: 10px;}
+	#propertyCount .ui-slider-range-min { background: #5cf8d8; background: linear-gradient(90deg, #5cf8d8, #26cad3);  border-radius: 10px;}
 	
 	#propertyCount .ui-slider-handle {
 		background: transparent url(img/circle_selector.png) no-repeat scroll 50% 50%;
@@ -216,7 +215,7 @@
 		border: none !important;
 		outline: none !important;
 	}
-	#channelManager { background: #555a70; background: linear-gradient(90deg, #555a70, #5bf7d8, #26cad3); border-radius: 10px;  border: none !important; }
+	#channelManager { background: #55586F url(img/channel_manager_bar.svg) no-repeat; border-radius: 10px;  border: none !important; }
 	#channelManager .ui-slider-handle {
 		background: transparent url(img/circle_selector.png) no-repeat scroll 50% 50%;
 		width: 35px;
@@ -225,7 +224,9 @@
 		border: none !important;
 		outline: none !important;
 	}
-	#channelManager .ui-slider-range-min { background: #555a70; background: linear-gradient(90deg, #555a70, #5bf7d8, #26cad3);  border-radius: 10px;}
+	/*
+	#channelManager .ui-slider-range-min { background: #55586F; background: linear-gradient(90deg, #55586F, #5BF8D8, #26cad3);  border-radius: 10px;}
+	*/
 	.sliderControl-label{
 		position: absolute;
 		text-align: center;
@@ -238,7 +239,7 @@
   </style>
 </head>
 <body style="background:#fafafa;">
-<input type="hidden" name="txtPropoertyCount" id="txtPropoertyCount" value="1" />
+<input type="hidden" name="txtPropertyCount" id="txtPropertyCount" value="1" />
 <input type="hidden" name="txtChannelSelect" id="txtChannelSelect" value="0" />
 <div class="container">
 <div class="col-sm-8 col-sm-offset-1" style="background:#fff;border-radius:20px;margin-top:60px;padding:40px;">
@@ -327,8 +328,7 @@
 				</div>
 			</div>
 			<div class="col-sm-6 col-xs-12">
-			
-			<p class="text-right text-gray text-xs-left"><b>Recovered Budget</b></p>
+				<p class="text-right text-gray text-xs-left"><b>Recovered Budget</b></p>
 				<h4 class="text-right text-xs-left"><span class="bold">$<span class="recoverCost">0</span></span></h4>
 			</div>
 				
@@ -364,25 +364,25 @@
 								<p class="" style="color:#d6d6d6;"><b>Listing Sites</b></p>
 								</div>
 								<div class="clear P5"></div>
-								<div class="col-sm-12">
-								<img src="img/homeaway_logo.png" width="35"/>
+								<div class="col-sm-12 col-xs-12 P0">
+								<img src="img/homeaway_logo.png" width="35" title="Homeaway"/>
 								<label class="switch">
-								  <input type="checkbox" name="chkHomeaway" id="chkHomeway" value="1" checked="checked" />
+								  <input type="checkbox" name="chkHomeaway" id="chkHomeway" value="1" checked="checked" title="Homeaway" />
 								  <span class="slider round"></span>
 								</label>
-								<img src="img/bookingcom_logo.png" width="35"/>
+								<img src="img/bookingcom_logo.png" width="35" title="Booking.com"/>
 								<label class="switch">
-								  <input type="checkbox" name="chkBooking" id="chkBooking" value="1" />
+								  <input type="checkbox" name="chkBooking" id="chkBooking" value="1" title="Booking.com" />
 								  <span class="slider round"></span>
 								</label>
-								<img src="img/airbnb_logo.png" width="35"/>
+								<img src="img/airbnb_logo.png" width="35" title="Airbnb"/>
 								<label class="switch">
-								  <input type="checkbox" name="chkAirbnb" id="chkAirbnb" value="1" />
+								  <input type="checkbox" name="chkAirbnb" id="chkAirbnb" value="1" title="Airbnb" />
 								  <span class="slider round"></span>
 								</label>
-								<img src="img/expedia_logo.png" width="35"/>
+								<img src="img/expedia_logo.png" width="35" title="Expedia"/>
 								<label class="switch">
-								  <input type="checkbox" name="chkExpedia" id="chkExpedia" value="1" />
+								  <input type="checkbox" name="chkExpedia" id="chkExpedia" value="1" title="Expedia"  />
 								  <span class="slider round"></span>
 								</label>
 								</div>	
@@ -392,19 +392,20 @@
 						<div class="row">
 							<div class="col-sm-4 col-xs-4">
 									<div class="col-sm-12 col-xs-12">
-									<p style="color:#55586f;"><b>No Channel Manager</b></p>
+									<p style="color:#55586f;"><span class="bold"><a href="javascript:void(0)" id="noChannel">No Channel Manager</a></span></p>
 									</div>
 							</div>
 							<div class="col-sm-4 col-xs-4">
 									<div class="col-sm-12 col-xs-12">
-									<p style="color:#55586f;" class="text-center"><b>Channel Manager</b></p>
+									<p style="color:#55586f;" class="text-center"><span class="bold"><a href="javascript:void(0)" id="manageChannel">Channel Manager</a></span></p>
 									</div>
 							</div>
 							<div class="col-sm-4 col-xs-4">
 									<div class="col-sm-12 col-xs-12">
-									<p style="color:#d6d6d6;text-align:right;" ><b>Smart Connections</b></p>
+									<p style="color:#d6d6d6;text-align:right;" ><span class="bold"><a href="javascript:void(0)" id="smartConnection">Smart Connections</a></span></p>
 									</div>
 							</div>
+							<div class="clear"></div>
 						</div>
 						<div class="tooltip-box3">
 						  <h3 style="color:#717070;font-size:16px;margin-bottom: 12px;margin:0px;" class="text-right"><b><span class="btn-close" style="cursor:pointer;">X</span></b></h3>
@@ -426,4 +427,3 @@
 </div>
 </body>
 </html>
-

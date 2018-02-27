@@ -179,7 +179,6 @@
 			animate: 'true',
 			slide: function(event, ui){
 				$('#txtChannelSelect').val(ui.value);
-				console.log(ui.value);
 				if(haSelect+bcSelect+exSelect+airSelect > 0){
 					calculateTotalHoursWithCost();
 				}

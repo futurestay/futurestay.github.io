@@ -27,13 +27,16 @@
 	function calculateTotalHoursWithCost()
 	{
 		var channelSelected = (haSelect+bcSelect+exSelect+airSelect);
+		if(channelSelected == 0){
+			$('.adminHours').text(0);
+			$('.hospitalityHours').text(0);
+			$('.adminCost').text(0);
+			$('.recoverCost').text(0);
+			return;
+		}
 		var effectiveRate =  baseOccupyRate + (channelSelected * 4);
 		var resPerPropertyPerYear = (maxBookPerYear * effectiveRate) / 100;
 		var hourSpentPerProperty = hrSpentWithOutTechnology * resPerPropertyPerYear;
-		if(channelSelected == 0){
-			alert('Please select any of site listing');
-			return;
-		}
 		var channelPercentage =  (1 / channelSelected);
 		var totalHoursSpent = channelSelected * channelPercentage * hourSpentPerProperty;
 		var totalProperties = $('#txtPropertyCount').val();
@@ -42,18 +45,27 @@
 		var gainPercent;
 		var channelSelect = $('#txtChannelSelect').val();
 		var hospitalitySliverVal = 0;
-		if(channelSelect == 0){
+		if(channelSelect >= 0 && channelSelect < 0.8){
 			gainPercent = noTechnology;
 			hospitalitySliverVal = 0;
 			$('#slider_1').removeClass('medium').removeClass('large');
-		} else if(channelSelect == 1){
+			$('#smartConnection').css({'color': '#9A9BA9'});
+			$('#manageChannel').css({'color': '#9A9BA9'});
+			$('#noChannel').css({'color': '#337ab7'});
+		} else if(channelSelect >= 0.8 && channelSelect < 1.6){
 			gainPercent = channelManager;
 			hospitalitySliverVal = 85;
 			$('#slider_1').addClass('medium').removeClass('large');
-		} else {
+			$('#noChannel').css({'color': '#9A9BA9'});
+			$('#smartConnection').css({'color': '#9A9BA9'});
+			$('#manageChannel').css({'color': '#337ab7'});
+		} else if(channelSelect <= 2){
 			gainPercent = smartConnection;
 			hospitalitySliverVal = 100;
 			$('#slider_1').removeClass('medium').addClass('large');
+			$('#noChannel').css({'color': '#9A9BA9'});
+			$('#manageChannel').css({'color': '#9A9BA9'});
+			$('#smartConnection').css({'color': '#337ab7'});
 		}
 		var adminHours = maxHourSpentYear * gainPercent;
 		var budgetSpent = totalCostPerYear * gainPercent;
@@ -80,24 +92,26 @@
 
 	$(document).ready(function(){
 		$(".rec-hover").mouseover(function(){
-        $( ".tooltip-box" ).show();
+			$(".tooltip-box").fadeIn(1000);
 		});
 		$(".rec-hover").mouseout(function(){
-			$( ".tooltip-box" ).hide();
+			
+			$(".tooltip-box").fadeOut(1000);
+			
 		});
 
 		$(".rec-hover2").mouseover(function(){
-			$( ".tooltip-box2" ).show();
+			$(".tooltip-box2").fadeIn(1000);
 		});
 		$(".rec-hover2").mouseout(function(){
-			$( ".tooltip-box2" ).hide();
+			$(".tooltip-box2").fadeOut(1000);
 		});
 
 		$(".rec-hover3").click(function(){
-			$( ".tooltip-box3" ).show();
+			$( ".tooltip-box3" ).slideDown();
 		});
 		$(".btn-close").click(function(){
-			$( ".tooltip-box3" ).hide();
+			$( ".tooltip-box3" ).slideUp();
 		});
 		$('#chkHomeway').change(function(){
 			if($(this).is(':checked')){
@@ -161,9 +175,11 @@
 		$('#channelManager').slider({
 			min: 0,
 			max: 2,
+			step: 0.1,
 			animate: 'true',
 			slide: function(event, ui){
 				$('#txtChannelSelect').val(ui.value);
+				console.log(ui.value);
 				if(haSelect+bcSelect+exSelect+airSelect > 0){
 					calculateTotalHoursWithCost();
 				}
@@ -176,26 +192,48 @@
 		calculateTotalHoursWithCost();
 		$('#noChannel').click(function(){
 			$('#channelManager').slider('value', 0);
+			$('#smartConnection').css({'color': '#9A9BA9'});
+			$('#manageChannel').css({'color': '#9A9BA9'});
+			$('#noChannel').css({'color': '#337ab7'});
 			calculateTotalHoursWithCost();
 		});
 		$('#manageChannel').click(function(){
 			$('#channelManager').slider('value', 1);
+			$('#noChannel').css({'color': '#9A9BA9'});
+			$('#smartConnection').css({'color': '#9A9BA9'});
+			$('#manageChannel').css({'color': '#337ab7'});
 			calculateTotalHoursWithCost();
 		});
 		$('#smartConnection').click(function(){
 			$('#channelManager').slider('value', 2);
+			$('#noChannel').css({'color': '#9A9BA9'});
+			$('#manageChannel').css({'color': '#9A9BA9'});
+			$('#smartConnection').css({'color': '#337ab7'});
 			calculateTotalHoursWithCost();
 		});
 	});
   </script>
   <style type="text/css">
+	a:hover, a:focus {
+		text-decoration: none;
+	}
     #slider_1{ height: 75px; border-radius: 10px; border: none !important; }
 	
-	#slider_1.ui-slider-horizontal { background: #ed6b77;  background: linear-gradient(-90deg,  #ed6b77, #f6a4ad); border-radius:10px; }
-	#slider_1 .ui-slider-range-min { background: #0cccd1 url("img/sparkles_medium.png") no-repeat right; border-radius:10px; }
+	#slider_1.ui-slider-horizontal { background: #ed6b77;  background: linear-gradient(-90deg,  #ed6b77, #f6a4ad); border-radius:10px; -webkit-transition: width 1s linear;
+		transition: width 1s linear; }
+	#slider_1 .ui-slider-range-min { background: #0cccd1; border-radius:10px; -webkit-transition: width 1s linear;
+		transition: width 1s linear;}
+		
+	#slider_1.large { background: #ed6b77;  background: linear-gradient(-90deg,  #ed6b77, #f6a4ad); border-radius:10px; -webkit-transition: width 1s linear;
+		transition: width 1s linear; }
+	#slider_1.large .ui-slider-range-min { background: #0cccd1 url("img/sparkles_medium.png") no-repeat right; border-radius:10px; -webkit-transition: width 1s linear;
+		transition: width 1s linear;}
 	
-	#slider_1.medium {background: #0cccd1 no-repeat right; border-radius:10px; }
-	#slider_1.medium .ui-slider-range-min {background: #ed6b77;  background: linear-gradient(-90deg,  #ed6b77, #f6a4ad); border-radius:10px; }
+	#slider_1.medium {background: #0cccd1 no-repeat right; border-radius:10px; -webkit-transition: width 1s linear;
+		transition: width 1s linear; }
+	#slider_1.medium .ui-slider-range-min {background: #ed6b77;  background: linear-gradient(-90deg,  #ed6b77, #f6a4ad); border-radius:10px;
+		-webkit-transition: width 1s linear;
+		transition: width 1s linear;	}
 	
 	#slider_1.ui-state-disabled{ opacity: 1 }
 	#slider_1 .ui-slider-handle {
@@ -203,26 +241,29 @@
 		height: 100px;
 		border: none !important;
 		outline: none !important;
+		cursor: pointer;
 	}
 	#propertyCount {border: none !important;  border-radius: 10px; background: #55586f; }
 	#propertyCount .ui-slider-range-min { background: #5cf8d8; background: linear-gradient(90deg, #5cf8d8, #26cad3);  border-radius: 10px;}
 	
 	#propertyCount .ui-slider-handle {
-		background: transparent url(img/circle_selector.png) no-repeat scroll 50% 50%;
+		background: transparent url(img/circle_selector.png?v1) no-repeat scroll 50% 50%;
 		width: 35px;
 		height: 35px;
 		top: -12px;
 		border: none !important;
 		outline: none !important;
+		cursor: pointer;
 	}
 	#channelManager { background: #55586F url(img/channel_manager_bar.svg) no-repeat 100% 100%; border-radius: 10px;  border: none !important; }
 	#channelManager .ui-slider-handle {
-		background: transparent url(img/circle_selector.png) no-repeat scroll 50% 50%;
+		background: transparent url(img/circle_selector.png?v1) no-repeat scroll 50% 50%;
 		width: 35px;
 		height: 35px;
 		top: -12px;
 		border: none !important;
 		outline: none !important;
+		cursor: pointer;
 	}
 	.sliderControl-label{
 		position: absolute;
@@ -249,7 +290,7 @@
                     <p><b>hour spent</b></p>
                 </div>
                 <div class="col-sm-6 col-xs-12">
-                    <h3 align="center" class="text-xs-left"><b>What's Your Yearly <br> Hospitality Opportunity?</b></h3>
+                    <h3 align="center" class="text-xs-left" style="margin-top:7px;"><span class="" style="font-size:26px; font-weight:900;">More Time This Year <br />For Hospitality</b></h3>
                     <div class="clear P5"></div>
                 </div>
                 <div class="col-sm-3 col-xs-12">
@@ -279,7 +320,7 @@
                     <h4><b>0 <span class="rec-hover" style="cursor:pointer"><i class="fa fa-question-circle"></i></span></b></h4>
                     <div class="clear P5"></div>
                     <div class="tooltip-box">
-                        <p class="text-center"><b>Reoccurring Tasks</b></p>
+                        <p class="text-center"><b>Recurring Tasks</b></p>
                         <div class="clear P5"></div>
                         <div class="col-sm-6 col-xs-6">
                             <p class="text-gray">Cancellations</p>
@@ -306,7 +347,7 @@
                 <div class="clear P5"></div>
                 <div class="col-sm-6 col-xs-12">
                     <p class="text-right text-gray text-xs-left"><b>New Opportunities</b></p>
-                    <h4 class="text-right text-xs-left"><b><span class="rec-hover2" style="cursor:pointer"><i class="fa fa-question-circle"></i></span> <span style="color:#4cebd6;">0</span></b></h4>
+                    <h4 class="text-right text-xs-left"><b><span class="rec-hover2" style="cursor:pointer"><i class="fa fa-question-circle"></i></span> <span style="color:#2A2C37;">0</span></b></h4>
                     <div class="tooltip-box2">
                         <p class="text-center text-xs-left"><b>New Opportunities</b></p>
                         <div class="clear P5"></div>
@@ -345,7 +386,8 @@
                         </div>
                         <div class="clear P10"></div>
                         <div class="row">
-                            <div class="col-sm-5 col-xs-12">
+							<div class="col-sm-12 col-xs-12" style="">
+                            <div class="col-sm-6 col-xs-12">
                                 <div class="col-sm-12">
                                     <p style="color:#d6d6d6;"><b>Number of Properties</b></p>
                                 </div>
@@ -355,7 +397,7 @@
                                 </div>
                                 <div class="P5"></div>
                             </div>
-                            <div class="col-sm-7 col-xs-12">
+                            <div class="col-sm-6 col-xs-12" style="padding:0px;">
                                 <div class="col-sm-12">
                                     <p class="" style="color:#d6d6d6;"><b>Listing Sites</b></p>
                                 </div>
@@ -383,10 +425,12 @@
                                     </label>
                                 </div>
                             </div>
+							</div>
                         </div>
                         <div class="clear P10"></div>
                         <div class="row">
-                            <div class="col-sm-4 col-xs-4">
+                            <div class="col-sm-12 col-xs-12" style="">
+							<div class="col-sm-4 col-xs-4">
                                 <div class="col-sm-12 col-xs-12">
                                     <p style="color:#55586f;"><span class="bold"><a href="javascript:void(0)" id="noChannel">No Channel Manager</a></span></p>
                                 </div>
@@ -401,6 +445,7 @@
                                     <p style="color:#d6d6d6;text-align:right;" ><span class="bold"><a href="javascript:void(0)" id="smartConnection">Smart Connections</a></span></p>
                                 </div>
                             </div>
+							</div>
                             <div class="clear"></div>
                         </div>
                         <div class="tooltip-box3">
@@ -409,8 +454,8 @@
                             <p style="color:#717070;font-size:14px;">Select your business settings or click around to see your <br /> hospitality opportunities.</p>
                         </div>
                         <div class="clear P10"></div>
-                        <div class="col-sm-10 col-xs-10 col-sm-offset-1 col-xs-offset-1" style="">
-                            <div id="channelManager"></div>
+                        <div class="col-sm-12 col-xs-12" style="">
+                            <div class="col-sm-12 col-xs-12" style=""><div id="channelManager"></div></div>
                         </div>
                         <div class="clear P10"></div>
                     </div>

@@ -1,11 +1,5 @@
 @charset "utf-8";
 
-/* Google Font Import */
-@import url(http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700|Open+Sans+Condensed:300,700|Roboto+Slab:400,300,700,100);
-@import url(http://fonts.googleapis.com/css?family=Roboto:400,100,300,500,700|Roboto+Condensed:400,300,700|Roboto+Slab:400,300,100,700);
-@import url(http://fonts.googleapis.com/css?family=Raleway:400,100,200,300,500,600,700,800,900);
-@import url(http://fonts.googleapis.com/css?family=Oswald:400,300,700);
-
 body
 {
 	background: #FFFBF4;
@@ -254,7 +248,7 @@ input:checked + .slider:before {
 {
 	position: absolute;
     top: 0;
-    background: rgba(255,255,255,0.9);
+    background: rgba(255,255,255,0.95);
     border: 2px solid #e6e5e5;
     z-index: 999;
     width: 400px;
@@ -272,7 +266,7 @@ input:checked + .slider:before {
 {
 	position: absolute;
     top: 0;
-    background: rgba(255,255,255,0.9);
+    background: rgba(255,255,255,0.95);
     border: 2px solid #e6e5e5;
     z-index: 999;
     width: 400px;

@@ -40,28 +40,42 @@
 		var channelSelect = $('#txtChannelSelect').val();
 		var hospitalitySliverVal = 0;
 		$('#hospitality').removeClass('sparkle_green');
-		if(channelSelect >= 0 && channelSelect < 0.8){
+		$('.sparkImg').hide();
+		if(channelSelect >= 0 && channelSelect < 0.5){
 			gainPercent = noTechnology;
 			hospitalitySliverVal = 0;
 			$('#slider_1').removeClass('medium').removeClass('large');
 			$('#smartConnection').css({'color': '#9A9BA9'});
 			$('#manageChannel').css({'color': '#9A9BA9'});
 			$('#noChannel').css({'color': '#337ab7'});
-		} else if(channelSelect >= 0.8 && channelSelect < 1.6){
+			var poorRnd = Math.floor(Math.random() * 3) + 1;
+			if(poorRnd > 3) poorRnd = 3;
+			$('.message-box').html($('.poor_'+poorRnd).html());
+			$('.show-img').attr('src', 'img/to-do-nochannelmanager.jpg');
+		} else if(channelSelect >= 0.5 && channelSelect < 1.2){
 			gainPercent = channelManager;
 			hospitalitySliverVal = 85;
 			$('#slider_1').addClass('medium').removeClass('large');
 			$('#noChannel').css({'color': '#9A9BA9'});
 			$('#smartConnection').css({'color': '#9A9BA9'});
 			$('#manageChannel').css({'color': '#337ab7'});
+			$('.show-img').attr('src', 'img/to-do-channelmanager.jpg');
+			var notBadRnd = Math.floor(Math.random() * 3) + 1;
+			if(notBadRnd > 3) notBadRnd = 3;
+			$('.message-box').html($('.notBad_'+notBadRnd).html());
 		} else if(channelSelect <= 2){
 			gainPercent = smartConnection;
 			hospitalitySliverVal = 100;
 			$('#hospitality').addClass('sparkle_green');
+			$('.sparkImg').show();
 			$('#slider_1').removeClass('medium').addClass('large');
 			$('#noChannel').css({'color': '#9A9BA9'});
 			$('#manageChannel').css({'color': '#9A9BA9'});
 			$('#smartConnection').css({'color': '#337ab7'});
+			$('.show-img').attr('src', 'img/to-do-smartconnections.jpg');
+			var goodRnd = Math.floor(Math.random() * 3) + 1;
+			if(goodRnd > 3) goodRnd = 3;
+			$('.message-box').html($('.good_'+goodRnd).html());
 		}
 		var adminHours = maxHourSpentYear * gainPercent;
 		var budgetSpent = totalCostPerYear * gainPercent;
@@ -109,6 +123,13 @@
 		$(".btn-close").click(function(){
 			$( ".tooltip-box3" ).slideUp();
 		});
+		$( ".show-img" ).hide();
+		$('body').on('click', '.message-btn', function(){
+			$( ".show-img" ).show();
+		});
+		$(".show-img").click(function(){
+			$( ".show-img" ).slideUp();
+		});
 		$('#chkHomeway').change(function(){
 			if($(this).is(':checked')){
 				haSelect = 1;
@@ -147,6 +168,7 @@
 			step: 5,
 			range: "min",
 			value: 0,
+			direction: 'right',
 		});
 		$("#slider_1").slider('disable');
 		$('#propertyCount').slider({
@@ -173,10 +195,11 @@
 		$('#channelManager').slider({
 			min: 0,
 			max: 2,
-			/*step: 0.1,*/
+			step: 0.05,
 			animate: 'true',
 			slide: function(event, ui){
 				$('#txtChannelSelect').val(ui.value);
+				console.log(ui.value);
 				calculateTotalHoursWithCost();
 			},
 			change: function(event, ui){
@@ -223,13 +246,11 @@
 		transition: width 1s linear; }
 	#slider_1.large .ui-slider-range-min { background: #0cccd1 url("img/sparkles_medium.png") no-repeat right; border-radius:10px; -webkit-transition: width 1s linear;
 		transition: width 1s linear;}
-	/*
 	#slider_1.medium {background: #0cccd1 no-repeat right; border-radius:10px; -webkit-transition: width 1s linear;
 		transition: width 1s linear; }
 	#slider_1.medium .ui-slider-range-min {background: #ed6b77;  background: linear-gradient(-90deg,  #ed6b77, #f6a4ad); border-radius:10px;
 		-webkit-transition: width 1s linear;
 		transition: width 1s linear;	}
-	*/
 	
 	#slider_1.ui-state-disabled{ opacity: 1 }
 	#slider_1 .ui-slider-handle {
@@ -241,7 +262,7 @@
 	}
 	#propertyCount {border: none !important;  border-radius: 10px; background: #55586f; }
 	#propertyCount .ui-slider-range-min { background: #5cf8d8; background: linear-gradient(90deg, #5cf8d8, #26cad3);  border-radius: 10px;}
-	.sparkle_green { color: #1FA7AF; background: url(img/green-sparkles.png)}
+	.sparkle_green { color: #1FA7AF;}
 	
 	#propertyCount .ui-slider-handle {
 		background: transparent url(img/circle_selector.png?v1) no-repeat scroll 50% 50%;
@@ -301,6 +322,68 @@
 	  transform: translateY(0);
 	  }
 	}
+	.message-box
+	{
+		background:#f3f3f5;border-radius:15px 15px 0px 0px;padding:15px 30px 19px 30px; /*min-height:150px;*/
+	}
+	.message-box a.message-btn
+	{
+		border: 1px solid #333;padding: 4px 12px;border-radius: 25px;margin-top: 10px;color: #333;text-decoration: none;font-size: 13px;
+	}
+	.show-img {
+		cursor: pointer;
+	  -webkit-animation-name: slideInUp;
+	  animation-name: slideInUp;
+	  -webkit-animation-duration: 0.5s;
+	  animation-duration: 0.5s;
+	  -webkit-animation-fill-mode: both;
+	  animation-fill-mode: both;
+	  }
+	  @-webkit-keyframes slideInUp {
+	  0% {
+	  -webkit-transform: translateY(100%);
+	  transform: translateY(100%);
+	  visibility: visible;
+	  }
+	  100% {
+	  -webkit-transform: translateY(0);
+	  transform: translateY(0);
+	  }
+	  }
+	  @keyframes slideInUp {
+	  0% {
+	  -webkit-transform: translateY(100%);
+	  transform: translateY(100%);
+	  visibility: visible;
+	  }
+	  100% {
+	  -webkit-transform: translateY(0);
+	  transform: translateY(0);
+	  }
+	  } 
+	  .slide-border::before
+	  {
+		content:"|";
+		position: relative;
+		top: 25px;
+		left: 4px;
+		color: rgb(154, 155, 169);
+	  }
+	   .slide-border-center::before
+	  {
+		content:"|";
+		position: relative;
+		top: 25px;
+		left: 7px;
+		color: rgb(154, 155, 169);
+	  }
+	  .slide-border-right::after
+	  {
+		content:"|";
+		position: relative;
+		top: 25px;right: 3px;
+		color: rgb(154, 155, 169);
+	  }
   </style>
 </head>
 <body style="background:#fafafa;">
@@ -322,7 +405,10 @@
                 </div>
                 <div class="col-sm-3 col-xs-12">
                     <p class="text-right text-xs-left">Hospitality</p>
+					<div style="position:relative;">
+					<img src="img/green-sparkles.png" class="sparkImg" style="position: absolute;width: 100%;height: 100%;right: -24px; display:none;"/>
                     <h1 class="text-right text-xs-left" id="hospitality"><span class="bold hospitalityHours">0</span></h1>
+					</div>
                     <p class="text-right text-xs-left"><b>hour gained</b></p>
                 </div>
                 <div class="clear P10"></div>
@@ -333,35 +419,36 @@
         </div>
         <div class="clear P10"></div>
         <div class="row">
-            <div class="col-sm-6 col-xs-12">
+			<div class="col-sm-12 col-xs-12 text-center">
+					<img src="img/to-do-channelmanager.jpg" width="100%" class="show-img" style="position: absolute;top: 0;left: 0;z-index:9;"/>
+			</div>
+			<div class="clear"></div>
+            <div class="col-sm-3 col-xs-12">
                 <div class="col-sm-12 col-xs-12">
                     <p><b>Administrative Cost</b></p>
                 </div>
                 <div class="clear P5"></div>
-                <div class="col-sm-6 col-xs-12">
+                <div class="col-sm-12 col-xs-12">
                     <p class="text-gray"><b>Budget Spent</b></p>
                     <h4><span class="bold">$<span class="adminCost">0</span></span></h4>
                 </div>
-                <div class="col-sm-6 col-xs-12">
-                    
-                </div>
             </div>
-            <div class="col-sm-6 col-xs-12">
+			<div class="col-sm-6 col-xs-12 text-center">
+				<div class="message-box">
+					
+				</div>
+			</div>
+            <div class="col-sm-3 col-xs-12">
                 <div class="col-sm-12 col-xs-12">
                     <p class="text-right text-xs-left"><b>Hospitality Gain</b></p>
                 </div>
                 <div class="clear P5"></div>
-                <div class="col-sm-6 col-xs-12">
-					
-                </div>
-                <div class="col-sm-6 col-xs-12">
+                <div class="col-sm-12 col-xs-12">
                     <p class="text-right text-gray text-xs-left"><b>Recovered Budget</b></p>
                     <h4 class="text-right text-xs-left"><span class="bold">$<span class="recoverCost">0</span></span></h4>
                 </div>
             </div>
         </div>
-        <div class="clear P10"></div>
-        <div class="clear P10"></div>
         <div class="row">
             <div class="col-sm-12">
                 <div class="col-sm-12">
@@ -377,21 +464,21 @@
                         <div class="row">
 							<div class="col-sm-12 col-xs-12" style="">
                             <div class="col-sm-6 col-xs-12">
-                                <div class="col-sm-12">
+                                <div class="col-sm-12"  style="padding: 0px;">
                                     <p style="color:#d6d6d6;"><b>Number of Properties</b></p>
                                 </div>
                                 <div class="clear P10"></div>
-                                <div class="col-sm-12">
+                                <div class="col-sm-12" style="padding: 0px;">
                                     <div id="propertyCount"></div>
                                 </div>
                                 <div class="P5"></div>
                             </div>
                             <div class="col-sm-6 col-xs-12" style="padding:0px;">
-                                <div class="col-sm-12" style="padding-left:25px;">
+                                <div class="col-sm-12" style="padding-left:40px;">
                                     <p class="" style="color:#d6d6d6;"><b>Listing Sites</b></p>
                                 </div>
                                 <div class="clear P5"></div>
-                                <div class="col-sm-12 col-xs-12" style="padding-left:25px;">
+                                <div class="col-sm-12 col-xs-12" style="padding-left:40px;">
                                     <img src="img/homeaway_logo.png" width="35" title="Homeaway"/>
                                     <label class="switch">
                                     <input type="checkbox" name="chkHomeaway" id="chkHomeway" value="1" checked="checked" title="Homeaway" />
@@ -419,26 +506,26 @@
                         <div class="clear P10"></div>
                         <div class="row">
                             <div class="col-sm-12 col-xs-12" style="">
-							<div class="col-sm-4 col-xs-4">
-                                <div class="col-sm-12 col-xs-12">
-                                    <p style="color:#55586f;"><span class="bold"><a href="javascript:void(0)" id="noChannel">No Channel Manager</a></span></p>
+							<div class="col-sm-3 col-xs-4">
+                                <div class="col-sm-12 col-xs-12" style="padding: 0px;">
+                                    <p style="color:#55586f;" class="slide-border"><span class="bold"><a href="javascript:void(0)" id="noChannel">No Channel Manager</a></span></p>
                                 </div>
                             </div>
-                            <div class="col-sm-4 col-xs-4">
-                                <div class="col-sm-12 col-xs-12">
-                                    <p style="color:#55586f;" class="text-center"><span class="bold"><a href="javascript:void(0)" id="manageChannel">Channel Manager</a></span></p>
+                            <div class="col-sm-3 col-xs-4">
+                                <div class="col-sm-12 col-xs-12" style="padding: 0px;">
+                                    <p style="color:#55586f;" class="text-left slide-border-center"><span class="bold"><a href="javascript:void(0)" id="manageChannel" style="">Channel Manager</a></span></p>
                                 </div>
                             </div>
-                            <div class="col-sm-4 col-xs-4">
-                                <div class="col-sm-12 col-xs-12">
-                                    <p style="color:#d6d6d6;text-align:right;" ><span class="bold"><a href="javascript:void(0)" id="smartConnection">Smart Connections</a></span></p>
+                            <div class="col-sm-6 col-xs-4">
+                                <div class="col-sm-12 col-xs-12" style="padding: 0px;">
+                                    <p style="color:#d6d6d6;text-align:right;"  class="slide-border-right"><span class="bold"><a href="javascript:void(0)" id="smartConnection">Smart Connections</a></span></p>
                                 </div>
                             </div>
 							</div>
                             <div class="clear"></div>
                         </div>
                         <div class="clear P10"></div>
-                        <div class="col-sm-12 col-xs-12" style="">
+                        <div class="col-sm-12 col-xs-12" style="padding: 0px;">
                             <div class="col-sm-12 col-xs-12 channelContainer"><div id="channelManager"></div></div>
                         </div>
                         <div class="clear P10"></div>
@@ -449,5 +536,50 @@
     </div>
 </div>
 </form>
+<div class="poor_1" style="display:none">
+	<h4 style="color:#e31d36"><span class="bold">POOR</span></h4>
+	<p class="text-gray" style="margin-bottom: 13px;">With no technology, you spent <span class="bold adminHours"></span> hours a year doing everything by hand! <img src="img/01.png" width="17" style="width:17px"/></p>
+	<a href="javascript:void(0)" class="message-btn">View to-do list</a>
+</div>
+<div class="poor_2" style="display:none">
+	<h4 style="color:#e31d36"><span class="bold">POOR</span></h4>
+	<p class="text-gray" style="margin-bottom: 13px;">With <span class="bold adminHours"></span> hours of administrative tasks, looks like you have a long year ahead <img src="img/08.png" width="17" style="width:17px"/></p>
+	<a href="javascript:void(0)" class="message-btn">View to-do list</a>
+</div>
+<div class="poor_3" style="display:none">
+	<h4 style="color:#e31d36"><span class="bold">POOR</span></h4>
+	<p class="text-gray" style="margin-bottom: 13px;">Have you looked into automation to cut down the <span class="bold adminHours"></span> hours a year spent on administrative tasks? <img src="img/09.png" width="17" style="width:17px"/></p>
+	<a href="javascript:void(0)" class="message-btn">View to-do list</a>
+</div>
+<div class="notBad_1" style="display:none">
+	<h4 style="color:#4cebd6"><span class="bold">NOT BAD</span></h4>
+	<p class="text-gray" style="margin-bottom: 13px;">Your channel manager saved you <span class="bold hospitalityHours"></span> hours. Not bad, but you better get to work! <img src="img/04.png" width="17" style="width:17px"/></p>
+	<a href="javascript:void(0)" class="message-btn">View to-do list</a>
+</div>
+<div class="notBad_2" style="display:none">
+	<h4 style="color:#4cebd6"><span class="bold">NOT BAD</span></h4>
+	<p class="text-gray" style="margin-bottom: 13px;">Your channel manager saved you <span class="bold hospitalityHours"></span> hours. How much time could you save if you had Smart Connections? <img src="img/12.png" width="17" style="width:17px"/></p>
+	<a href="javascript:void(0)" class="message-btn">View to-do list</a>
+</div>
+<div class="notBad_3" style="display:none">
+	<h4 style="color:#4cebd6"><span class="bold">NOT BAD</span></h4>
+	<p class="text-gray" style="margin-bottom: 13px;">Your channel manager saved you <span class="bold hospitalityHours"></span> hours, but there’s still plenty of administrative work left for you <img src="img/10.png" width="17" style="width:17px"/></p>
+	<a href="javascript:void(0)" class="message-btn">View to-do list</a>
+</div>
+<div class="good_1" style="display:none">
+	<h4 class="sparkle_green"><span class="bold">HIGH-FIVE!</span></h4>
+	<p class="text-gray" style="margin-bottom: 13px;">Smart Connections freed up <span class="bold hospitalityHours"></span> hours that you can now spend on hospitality!<img src="img/11.png" width="17" style="width:17px"/></p>
+	<a href="javascript:void(0)" class="message-btn">View to-do list</a>
+</div>
+<div class="good_2" style="display:none">
+	<h4 class="sparkle_green"><span class="bold">LOOKING GOOD!</span></h4>
+	<p class="text-gray" style="margin-bottom: 13px;">Say "goodbye" to manual administrative tasks and "hello" to <span class="bold hospitalityHours"></span> extra hours delivering 5-star hospitality!<img src="img/07.png" width="17" style="width:17px"/></p>
+	<a href="javascript:void(0)" class="message-btn">View to-do list</a>
+</div>
+<div class="good_3" style="display:none">
+	<h4  class="sparkle_green"><span class="bold">WOW!</span></h4>
+	<p class="text-gray" style="margin-bottom: 13px;">How much will you grow your business & hospitality with the <span class="bold hospitalityHours"></span>  hours Smart Connections freed up?<img src="img/06.png" width="17" style="width:17px"/></p>
+	<a href="javascript:void(0)" class="message-btn">View to-do list</a>
+</div>
 </body>
 </html>

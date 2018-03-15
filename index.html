@@ -29,11 +29,8 @@
 	{
 		var channelSelected = (haSelect+bcSelect+exSelect+airSelect);
 		if(channelSelected == 0){
-			$('.adminHours').text(0);
-			$('.hospitalityHours').text(0);
-			$('.adminCost').text(0);
-			$('.recoverCost').text(0);
-			return;
+			channelSelected = 1;
+			//return;
 		}
 		var effectiveRate =  baseOccupyRate + (channelSelected * 4);
 		var resPerPropertyPerYear = (maxBookPerYear * effectiveRate) / 100;
@@ -161,11 +158,9 @@
 			value: 1,
 			animate: 'true',
 			range: "min",
-			slide: function(event, ui){
+			stop: function(event, ui){
 				$('#txtPropertyCount').val(ui.value);
-				if(haSelect+bcSelect+exSelect+airSelect > 0){
-					calculateTotalHoursWithCost();
-				}
+				calculateTotalHoursWithCost();
 				$(this).find('.ui-slider-handle').html('<div class="sliderControl-label v-labelCurrent">'+ui.value+'</div>');
 			},
 			change: function(event, ui){
@@ -180,9 +175,7 @@
 			animate: 'true',
 			slide: function(event, ui){
 				$('#txtChannelSelect').val(ui.value);
-				if(haSelect+bcSelect+exSelect+airSelect > 0){
-					calculateTotalHoursWithCost();
-				}
+				calculateTotalHoursWithCost();
 			},
 			change: function(event, ui){
 				$('#txtChannelSelect').val(ui.value);
@@ -228,12 +221,13 @@
 		transition: width 1s linear; }
 	#slider_1.large .ui-slider-range-min { background: #0cccd1 url("img/sparkles_medium.png") no-repeat right; border-radius:10px; -webkit-transition: width 1s linear;
 		transition: width 1s linear;}
-	
+	/*
 	#slider_1.medium {background: #0cccd1 no-repeat right; border-radius:10px; -webkit-transition: width 1s linear;
 		transition: width 1s linear; }
 	#slider_1.medium .ui-slider-range-min {background: #ed6b77;  background: linear-gradient(-90deg,  #ed6b77, #f6a4ad); border-radius:10px;
 		-webkit-transition: width 1s linear;
 		transition: width 1s linear;	}
+	*/
 	
 	#slider_1.ui-state-disabled{ opacity: 1 }
 	#slider_1 .ui-slider-handle {
@@ -346,28 +340,7 @@
                     <h4><span class="bold">$<span class="adminCost">0</span></span></h4>
                 </div>
                 <div class="col-sm-6 col-xs-12">
-                    <p class="text-gray"><b>Recurring Tasks</b></p>
-                    <h4><b>0 <span class="rec-hover" style="cursor:pointer"><i class="fa fa-question-circle"></i></span></b></h4>
-                    <div class="clear P5"></div>
-                    <div class="tooltip-box">
-                        <p class="text-center"><b>Recurring Tasks</b></p>
-                        <div class="clear P5"></div>
-                        <div class="col-sm-6 col-xs-6">
-                            <p class="text-gray">Cancellations</p>
-                            <p class="text-gray">Refunds</p>
-                            <p class="text-gray">Charge Backs</p>
-                            <p class="text-gray">RSVP Modifications</p>
-                            <p class="text-gray">Check in emails</p>
-                            <p class="text-gray">Charging Credit Cards</p>
-                        </div>
-                        <div class="col-sm-6 col-xs-6">
-                            <p class="text-gray">Faild transaction</p>
-                            <p class="text-gray">Balance payment</p>
-                            <p class="text-gray">Paying Channel Commissions</p>
-                            <p class="text-gray">Syncing Calendars</p>
-                            <p class="text-gray">Update Property Information</p>
-                        </div>
-                    </div>
+                    
                 </div>
             </div>
             <div class="col-sm-6 col-xs-12">
@@ -376,24 +349,7 @@
                 </div>
                 <div class="clear P5"></div>
                 <div class="col-sm-6 col-xs-12">
-                    <p class="text-right text-gray text-xs-left"><b>New Opportunities</b></p>
-                    <h4 class="text-right text-xs-left"><b><span class="rec-hover2" style="cursor:pointer"><i class="fa fa-question-circle"></i></span> <span style="color:#2A2C37;">0</span></b></h4>
-                    <div class="tooltip-box2">
-                        <p class="text-center text-xs-left"><b>New Opportunities</b></p>
-                        <div class="clear P5"></div>
-                        <div class="col-sm-6 col-xs-6">
-                            <p class="text-gray">Welcoming Guests</p>
-                            <p class="text-gray">Handling welcome baskets</p>
-                            <p class="text-gray">Get better property photos</p>
-                            <p class="text-gray">Writing a vacation blog</p>
-                        </div>
-                        <div class="col-sm-6 col-xs-6">
-                            <p class="text-gray">Create new ad campaign</p>
-                            <p class="text-gray">Upgrading amenities</p>
-                            <p class="text-gray">Expand the property</p>
-                            <p class="text-gray">Reply to reviews</p>
-                        </div>
-                    </div>
+					
                 </div>
                 <div class="col-sm-6 col-xs-12">
                     <p class="text-right text-gray text-xs-left"><b>Recovered Budget</b></p>

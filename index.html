@@ -47,7 +47,7 @@
 			$('#slider_1').removeClass('medium').removeClass('large');
 			$('#smartConnection').css({'color': '#9A9BA9'});
 			$('#manageChannel').css({'color': '#9A9BA9'});
-			$('#noChannel').css({'color': '#337ab7'});
+			$('#noChannel').css({'color': '#fff'});
 			var poorRnd = Math.floor(Math.random() * 3) + 1;
 			if(poorRnd > 3) poorRnd = 3;
 			$('.message-box').html($('.poor_'+poorRnd).html());
@@ -58,7 +58,7 @@
 			$('#slider_1').addClass('medium').removeClass('large');
 			$('#noChannel').css({'color': '#9A9BA9'});
 			$('#smartConnection').css({'color': '#9A9BA9'});
-			$('#manageChannel').css({'color': '#337ab7'});
+			$('#manageChannel').css({'color': '#fff'});
 			$('.show-img').attr('src', 'img/to-do-channelmanager.jpg');
 			var notBadRnd = Math.floor(Math.random() * 3) + 1;
 			if(notBadRnd > 3) notBadRnd = 3;
@@ -68,10 +68,10 @@
 			hospitalitySliverVal = 100;
 			$('#hospitality').addClass('sparkle_green');
 			$('.sparkImg').show();
-			$('#slider_1').removeClass('medium').addClass('large');
+			$('#slider_1').removeClass('medium').addClass('large').addClass('back');
 			$('#noChannel').css({'color': '#9A9BA9'});
 			$('#manageChannel').css({'color': '#9A9BA9'});
-			$('#smartConnection').css({'color': '#337ab7'});
+			$('#smartConnection').css({'color': '#fff'});
 			$('.show-img').attr('src', 'img/to-do-smartconnections.jpg');
 			var goodRnd = Math.floor(Math.random() * 3) + 1;
 			if(goodRnd > 3) goodRnd = 3;
@@ -85,7 +85,6 @@
 		$('.hospitalityHours').text(addCommas(Math.round(remainHours)));
 		$('.adminCost').text(addCommas(budgetSpent.toFixed(2)));
 		$('.recoverCost').text(addCommas(recoverBudget.toFixed(2)));
-		$('#slider_1').slider( "value", hospitalitySliverVal);
 	}
 	function addCommas(nStr)
 	{
@@ -101,34 +100,13 @@
 	}
 
 	$(document).ready(function(){
-		$(".rec-hover").mouseover(function(){
-			$(".tooltip-box").fadeIn(1000);
-		});
-		$(".rec-hover").mouseout(function(){
-			
-			$(".tooltip-box").fadeOut(1000);
-			
-		});
-
-		$(".rec-hover2").mouseover(function(){
-			$(".tooltip-box2").fadeIn(1000);
-		});
-		$(".rec-hover2").mouseout(function(){
-			$(".tooltip-box2").fadeOut(1000);
-		});
-
-		$(".rec-hover3").click(function(){
-			$( ".tooltip-box3" ).show();
-		});
-		$(".btn-close").click(function(){
-			$( ".tooltip-box3" ).slideUp();
-		});
 		$( ".show-img" ).hide();
 		$('body').on('click', '.message-btn', function(){
+			$( ".show-img" ).removeClass("fadeOutDown");
 			$( ".show-img" ).show();
 		});
 		$(".show-img").click(function(){
-			$( ".show-img" ).slideUp();
+			$( ".show-img" ).addClass("fadeOutDown");
 		});
 		$('#chkHomeway').change(function(){
 			if($(this).is(':checked')){
@@ -162,15 +140,6 @@
 			}
 			calculateTotalHoursWithCost();
 		});
-		$("#slider_1").slider({
-			min: 0,
-			max: 100,
-			step: 5,
-			range: "min",
-			value: 0,
-			direction: 'right',
-		});
-		$("#slider_1").slider('disable');
 		$('#propertyCount').slider({
 			min: 1,
 			max: 100,
@@ -197,13 +166,15 @@
 			max: 2,
 			step: 0.05,
 			animate: 'true',
-			slide: function(event, ui){
+			stop: function(event, ui){
 				$('#txtChannelSelect').val(ui.value);
-				console.log(ui.value);
 				calculateTotalHoursWithCost();
 			},
 			change: function(event, ui){
 				$('#txtChannelSelect').val(ui.value);
+			},
+			slide: function(event, ui){
+
 			}
 		});
 		$('#propertyCount').find('.ui-slider-handle').html('<div class="sliderControl-label v-labelCurrent">1</div>');
@@ -212,21 +183,21 @@
 			$('#channelManager').slider('value', 0);
 			$('#smartConnection').css({'color': '#9A9BA9'});
 			$('#manageChannel').css({'color': '#9A9BA9'});
-			$('#noChannel').css({'color': '#337ab7'});
+			$('#noChannel').css({'color': '#fff'});
 			calculateTotalHoursWithCost();
 		});
 		$('#manageChannel').click(function(){
-			$('#channelManager').slider('value', 1);
+			$('#channelManager').slider('value', 0.5);
 			$('#noChannel').css({'color': '#9A9BA9'});
 			$('#smartConnection').css({'color': '#9A9BA9'});
-			$('#manageChannel').css({'color': '#337ab7'});
+			$('#manageChannel').css({'color': '#fff'});
 			calculateTotalHoursWithCost();
 		});
 		$('#smartConnection').click(function(){
-			$('#channelManager').slider('value', 2);
+			$('#channelManager').slider('value', 1.95);
 			$('#noChannel').css({'color': '#9A9BA9'});
 			$('#manageChannel').css({'color': '#9A9BA9'});
-			$('#smartConnection').css({'color': '#337ab7'});
+			$('#smartConnection').css({'color': '#fff'});
 			calculateTotalHoursWithCost();
 		});
 	});
@@ -235,35 +206,53 @@
 	a:hover, a:focus {
 		text-decoration: none;
 	}
-    #slider_1{ height: 75px; border-radius: 10px; border: none !important; }
-	
-	#slider_1.ui-slider-horizontal { background: #ed6b77;  background: linear-gradient(-90deg,  #ed6b77, #f6a4ad); border-radius:10px; -webkit-transition: width 1s linear;
-		transition: width 1s linear; }
-	#slider_1 .ui-slider-range-min { background: #0cccd1; border-radius:10px; -webkit-transition: width 1s linear;
-		transition: width 1s linear;}
+    #slider_1{ height: 75px; border-radius: 10px; border: none !important; float:right; 
+		width: 100%;-webkit-animation-duration: 1s;
+		-webkit-animation-name: reducetime3;
+		transition-timing-function: ease-out;
+	}
+	#slider_1 .ui-slider-range-min { float: right; height: 75px;}
+	#slider_1.medium .ui-slider-range-min { background: #0cccd1 no-repeat right; border-radius:10px;
+		-webkit-animation-duration: 1s;
+		-webkit-animation-name: secondDiv;
+		transition-timing-function: ease-out;
+	}
+	#slider_1.backmedium { background: linear-gradient(-90deg,  #ed6b77, #f6a4ad); border-radius:10px;
+		-webkit-animation-duration: 1s;
+		-webkit-animation-name: reducetime4;
+		transition-timing-function: ease-out;
 		
-	#slider_1.large { background: #ed6b77;  background: linear-gradient(-90deg,  #ed6b77, #f6a4ad); border-radius:10px; -webkit-transition: width 1s linear;
-		transition: width 1s linear; }
-	#slider_1.large .ui-slider-range-min { background: #0cccd1 url("img/sparkles_medium.png") no-repeat right; border-radius:10px; -webkit-transition: width 1s linear;
-		transition: width 1s linear;}
-	#slider_1.medium {background: #0cccd1 no-repeat right; border-radius:10px; -webkit-transition: width 1s linear;
-		transition: width 1s linear; }
-	#slider_1.medium .ui-slider-range-min {background: #ed6b77;  background: linear-gradient(-90deg,  #ed6b77, #f6a4ad); border-radius:10px;
-		-webkit-transition: width 1s linear;
-		transition: width 1s linear;	}
+	}
+	#slider_1.backmedium .ui-slider-range-min { background: #0cccd1 no-repeat right; border-radius:10px;}
+	#slider_1.large {
+		background: #ed6b77;  background: #0cccd1 url("img/sparkles_medium.png") no-repeat right; border-radius:10px; 
+		-webkit-animation-duration: 1s;
+	 -webkit-animation-name: reducetime2;
+	}
 	
-	#slider_1.ui-state-disabled{ opacity: 1 }
-	#slider_1 .ui-slider-handle {
-		background: transparent;
-		height: 100px;
-		border: none !important;
-		outline: none !important;
-		cursor: pointer;
+	.emptyBg{
+		background: linear-gradient(-90deg,  #ed6b77, #f6a4ad);height: 75px;border-radius: 10px;
+	}
+	@-webkit-keyframes secondDiv {
+		0% {width: 0;}
+		100% { width: 16.7%; }
+	}	
+	@-webkit-keyframes reducetime2 {
+		0% {width: 0;}
+		100% { width: 100%; }
+	}
+	@-webkit-keyframes reducetime3 {
+		0% {width: 0;}
+		100% { width: 100%; }
+	}
+	@-webkit-keyframes reducetime4 {
+		0% {width: 100%;}
+		100% { width: 0%; }
 	}
 	#propertyCount {border: none !important;  border-radius: 10px; background: #55586f; }
 	#propertyCount .ui-slider-range-min { background: #5cf8d8; background: linear-gradient(90deg, #5cf8d8, #26cad3);  border-radius: 10px;}
 	.sparkle_green { color: #1FA7AF;}
-	
+	#propertyCount .ui-state-active { color: #000;}
 	#propertyCount .ui-slider-handle {
 		background: transparent url(img/circle_selector.png?v1) no-repeat scroll 50% 50%;
 		width: 35px;
@@ -324,12 +313,13 @@
 	}
 	.message-box
 	{
-		background:#f3f3f5;border-radius:15px 15px 0px 0px;padding:15px 30px 19px 30px; /*min-height:150px;*/
+		background:#f3f3f5;border-radius:15px 15px 0px 0px;padding:15px 30px 19px 30px; min-height:150px;
 	}
 	.message-box a.message-btn
 	{
 		border: 1px solid #333;padding: 4px 12px;border-radius: 25px;margin-top: 10px;color: #333;text-decoration: none;font-size: 13px;
 	}
+	
 	.show-img {
 		cursor: pointer;
 	  -webkit-animation-name: slideInUp;
@@ -361,6 +351,34 @@
 	  transform: translateY(0);
 	  }
 	  } 
+	  .fadeOutDown {
+		  -webkit-animation-name: fadeOutDown;
+		  animation-name: fadeOutDown;
+		  -webkit-animation-duration: 1s;
+		  animation-duration: 1s;
+		  -webkit-animation-fill-mode: both;
+		  animation-fill-mode: both;
+		  }
+		  @-webkit-keyframes fadeOutDown {
+		  0% {
+		  opacity: 1;
+		  }
+		  100% {
+		  opacity: 0;
+		  -webkit-transform: translate3d(0, 100%, 0);
+		  transform: translate3d(0, 100%, 0);
+		  }
+		  }
+		  @keyframes fadeOutDown {
+		  0% {
+		  opacity: 1;
+		  }
+		  100% {
+		  opacity: 0;
+		  -webkit-transform: translate3d(0, 100%, 0);
+		  transform: translate3d(0, 100%, 0);
+		  }
+		  }
 	  .slide-border::before
 	  {
 		content:"|";
@@ -413,7 +431,11 @@
                 </div>
                 <div class="clear P10"></div>
                 <div class="col-sm-12 col-xs-12">
-                    <div id="slider_1"></div>
+                    <div class="emptyBg" style="">
+					<div id="slider_1">
+						<div class="ui-slider-range-min col-sm-2" style="padding:0"></div>
+					</div>
+					</div>
                 </div>
             </div>
         </div>
@@ -469,7 +491,8 @@
                                 </div>
                                 <div class="clear P10"></div>
                                 <div class="col-sm-12" style="padding: 0px;">
-                                    <div id="propertyCount"></div>
+                                    <div id="propertyCount">
+									</div>
                                 </div>
                                 <div class="P5"></div>
                             </div>
@@ -552,33 +575,33 @@
 	<a href="javascript:void(0)" class="message-btn">View to-do list</a>
 </div>
 <div class="notBad_1" style="display:none">
-	<h4 style="color:#4cebd6"><span class="bold">NOT BAD</span></h4>
+	<h4 style="color:#55586f"><span class="bold">NOT BAD</span></h4>
 	<p class="text-gray" style="margin-bottom: 13px;">Your channel manager saved you <span class="bold hospitalityHours"></span> hours. Not bad, but you better get to work! <img src="img/04.png" width="17" style="width:17px"/></p>
 	<a href="javascript:void(0)" class="message-btn">View to-do list</a>
 </div>
 <div class="notBad_2" style="display:none">
-	<h4 style="color:#4cebd6"><span class="bold">NOT BAD</span></h4>
+	<h4 style="color:#55586f"><span class="bold">NOT BAD</span></h4>
 	<p class="text-gray" style="margin-bottom: 13px;">Your channel manager saved you <span class="bold hospitalityHours"></span> hours. How much time could you save if you had Smart Connections? <img src="img/12.png" width="17" style="width:17px"/></p>
 	<a href="javascript:void(0)" class="message-btn">View to-do list</a>
 </div>
 <div class="notBad_3" style="display:none">
-	<h4 style="color:#4cebd6"><span class="bold">NOT BAD</span></h4>
+	<h4 style="color:#55586f"><span class="bold">NOT BAD</span></h4>
 	<p class="text-gray" style="margin-bottom: 13px;">Your channel manager saved you <span class="bold hospitalityHours"></span> hours, but there’s still plenty of administrative work left for you <img src="img/10.png" width="17" style="width:17px"/></p>
 	<a href="javascript:void(0)" class="message-btn">View to-do list</a>
 </div>
 <div class="good_1" style="display:none">
 	<h4 class="sparkle_green"><span class="bold">HIGH-FIVE!</span></h4>
-	<p class="text-gray" style="margin-bottom: 13px;">Smart Connections freed up <span class="bold hospitalityHours"></span> hours that you can now spend on hospitality!<img src="img/11.png" width="17" style="width:17px"/></p>
+	<p class="text-gray" style="margin-bottom: 13px;">Smart Connections freed up <span class="bold hospitalityHours"></span> hours that you can now spend on hospitality! <img src="img/11.png" width="17" style="width:17px"/></p>
 	<a href="javascript:void(0)" class="message-btn">View to-do list</a>
 </div>
 <div class="good_2" style="display:none">
 	<h4 class="sparkle_green"><span class="bold">LOOKING GOOD!</span></h4>
-	<p class="text-gray" style="margin-bottom: 13px;">Say "goodbye" to manual administrative tasks and "hello" to <span class="bold hospitalityHours"></span> extra hours delivering 5-star hospitality!<img src="img/07.png" width="17" style="width:17px"/></p>
+	<p class="text-gray" style="margin-bottom: 13px;">Say "goodbye" to manual administrative tasks and "hello" to <span class="bold hospitalityHours"></span> extra hours delivering 5-star hospitality! <img src="img/07.png" width="17" style="width:17px"/></p>
 	<a href="javascript:void(0)" class="message-btn">View to-do list</a>
 </div>
 <div class="good_3" style="display:none">
 	<h4  class="sparkle_green"><span class="bold">WOW!</span></h4>
-	<p class="text-gray" style="margin-bottom: 13px;">How much will you grow your business & hospitality with the <span class="bold hospitalityHours"></span>  hours Smart Connections freed up?<img src="img/06.png" width="17" style="width:17px"/></p>
+	<p class="text-gray" style="margin-bottom: 13px;">How much will you grow your business & hospitality with the <span class="bold hospitalityHours"></span>  hours Smart Connections freed up? <img src="img/06.png" width="17" style="width:17px"/></p>
 	<a href="javascript:void(0)" class="message-btn">View to-do list</a>
 </div>
 </body>

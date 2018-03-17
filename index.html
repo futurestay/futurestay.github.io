@@ -42,6 +42,9 @@
 		var channelSelect = $('#txtChannelSelect').val();
 		$('#hospitality').removeClass('sparkle_green');
 		$('.sparkImg').hide();
+		$('.howwork').hide();
+		$('.message-box').show();
+		$('.opac').css({'opacity': 1});
 		if(channelSelect >= 0 && channelSelect < 0.5){
 			gainPercent = noTechnology;
 			$('#slider_1').removeClass('medium').removeClass('large');
@@ -70,13 +73,13 @@
 			gainPercent = smartConnection;
 			$('#hospitality').addClass('sparkle_green');
 			$('.sparkImg').show();
-			$('#slider_1').removeClass('medium').addClass('large');
+			$('#slider_1').removeClass('medium').addClass('large').addClass('back');
 			$('#noChannel').css({'color': '#9A9BA9'});
 			$('#manageChannel').css({'color': '#9A9BA9'});
 			$('#smartConnection').css({'color': '#fff'});
 			$('.show-img').attr('src', 'img/to-do-smartconnections.jpg');
-			$('#first').width('0%');
-			$('#second').width('100%');
+			$('#first').width('2%');
+			$('#second').width('98%');
 			var goodRnd = Math.floor(Math.random() * 3) + 1;
 			if(goodRnd > 3) goodRnd = 3;
 			$('.message-box').html($('.good_'+goodRnd).html());
@@ -187,7 +190,7 @@
 			
 		});
 		$('#propertyCount').find('.ui-slider-handle').html('<div class="sliderControl-label v-labelCurrent">1</div>');
-		calculateTotalHoursWithCost();
+		//calculateTotalHoursWithCost();
 		$('#noChannel').click(function(){
 			$('#channelManager').slider('value', 0);
 			$('#smartConnection').css({'color': '#9A9BA9'});
@@ -217,15 +220,20 @@
 	}
     #slider_1 {
 		background: #ed6b77; border: none !important;
-		border-radius:10px; height: 75px; float: left; width: 100%;
+		border-radius:10px; height: 75px; float: left; width: 100%; overflow:hidden;
 	}
 	#first {
 		background: #ed6b77;  background: linear-gradient(-90deg,  #ed6b77, #f6a4ad); 
 		border-radius:10px; -webkit-transition: width 1s ease; transition: width 1s ease;
 		height: 75px; float: left; width: 100%;
 	}
+	
+	#slider_1.medium #first {
+		 border-radius: 10px 0px 0px 10px;
+	}
+	
 	#second {
-		background: #0cccd1; border-radius:10px; -webkit-transition: width 1s ease;
+		background: #0cccd1;  border-radius: 0px 10px 10px 0px;-webkit-transition: width 1s ease;
 		transition: width 1s ease;height: 75px; float: right; width: 0%
 	}
 	#slider_1.large #second {
@@ -300,6 +308,12 @@
 	.message-box a.message-btn
 	{
 		border: 1px solid #333;padding: 4px 12px;border-radius: 25px;margin-top: 10px;color: #333;text-decoration: none;font-size: 13px;
+	}
+	.howwork{
+		background:#fbf8c6;border-radius:15px;padding:15px 30px 19px 30px; margin-bottom:20px;
+	}
+	.opac {
+		opacity: 0.5;
 	}
 	.show-img {
 		cursor: pointer;
@@ -393,20 +407,20 @@
     <div class="col-sm-8 col-sm-offset-1" style="background:#fff;border-radius:20px;margin-top:60px;padding:40px;">
         <div class="row">
             <div class="col-sm-12">
-                <div class="col-sm-3 col-xs-12">
+                <div class="col-sm-3 col-xs-12 opac">
                     <p>Administrative</p>
-                    <h1><span class="bold adminHours">0</span></h1>
+                    <h1><span class="bold adminHours">--</span></h1>
                     <p><b>hour spent</b></p>
                 </div>
                 <div class="col-sm-6 col-xs-12">
                     <h3 align="center" class="text-xs-left" style="margin-top:7px;"><span class="" style="font-size:26px; font-weight:900;line-height:36px;">More Time This Year <br />For Hospitality</b></h3>
                     <div class="clear P5"></div>
                 </div>
-                <div class="col-sm-3 col-xs-12">
+                <div class="col-sm-3 col-xs-12 opac">
                     <p class="text-right text-xs-left">Hospitality</p>
 					<div style="position:relative;">
 					<img src="img/green-sparkles.png" class="sparkImg" style="position: absolute;width: 100%;height: 100%;right: -24px; display:none;"/>
-                    <h1 class="text-right text-xs-left" id="hospitality"><span class="bold hospitalityHours">0</span></h1>
+                    <h1 class="text-right text-xs-left" id="hospitality"><span class="bold hospitalityHours">--</span></h1>
 					</div>
                     <p class="text-right text-xs-left"><b>hour gained</b></p>
                 </div>
@@ -425,29 +439,35 @@
 					<img src="img/to-do-channelmanager.jpg" width="100%" class="show-img" style="position: absolute;top: 0;left: 0;z-index:9;"/>
 			</div>
 			<div class="clear"></div>
-            <div class="col-sm-3 col-xs-12">
+            <div class="col-sm-3 col-xs-12 opac">
                 <div class="col-sm-12 col-xs-12">
                     <p><b>Administrative Cost</b></p>
                 </div>
                 <div class="clear P5"></div>
                 <div class="col-sm-12 col-xs-12">
                     <p class="text-gray"><b>Budget Spent</b></p>
-                    <h4><span class="bold">$<span class="adminCost">0</span></span></h4>
+                    <h4><span class="bold">$<span class="adminCost">--</span></span></h4>
                 </div>
             </div>
 			<div class="col-sm-6 col-xs-12 text-center">
-				<div class="message-box">
+				<div class="message-box" style="display:none;">
 					
 				</div>
+				<div class="howwork">
+					<h4 style="color:#333"><span class="bold">How this works</span></h4>
+	<p class="text-gray" style="margin-bottom: 13px; text-align:center;font-size:14px;">
+		Adjust the settings below <br />to see your results
+	</p>
+				</div>
 			</div>
-            <div class="col-sm-3 col-xs-12">
+            <div class="col-sm-3 col-xs-12 opac">
                 <div class="col-sm-12 col-xs-12">
                     <p class="text-right text-xs-left"><b>Hospitality Gain</b></p>
                 </div>
                 <div class="clear P5"></div>
                 <div class="col-sm-12 col-xs-12">
                     <p class="text-right text-gray text-xs-left"><b>Recovered Budget</b></p>
-                    <h4 class="text-right text-xs-left"><span class="bold">$<span class="recoverCost">0</span></span></h4>
+                    <h4 class="text-right text-xs-left"><span class="bold">$<span class="recoverCost">--</span></span></h4>
                 </div>
             </div>
         </div>

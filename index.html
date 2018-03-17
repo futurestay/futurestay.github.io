@@ -6,8 +6,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="shortcut icon" href="favicon.png" />
   <link href="js/jquery_ui/jquery-ui.min.css" rel="stylesheet" />
+  
   <link rel="stylesheet" href="css/bootstrap.css">
   <link rel="stylesheet" href="css/style.css">
+ 
   <link href="css/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
   <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
   <script type="text/javascript" src="js/jquery_ui/jquery-ui.min.js"></script>
@@ -38,41 +40,43 @@
 		var totalCostPerYear = maxHourSpentYear * employeeCost;
 		var gainPercent;
 		var channelSelect = $('#txtChannelSelect').val();
-		var hospitalitySliverVal = 0;
 		$('#hospitality').removeClass('sparkle_green');
 		$('.sparkImg').hide();
 		if(channelSelect >= 0 && channelSelect < 0.5){
 			gainPercent = noTechnology;
-			hospitalitySliverVal = 0;
 			$('#slider_1').removeClass('medium').removeClass('large');
 			$('#smartConnection').css({'color': '#9A9BA9'});
 			$('#manageChannel').css({'color': '#9A9BA9'});
 			$('#noChannel').css({'color': '#fff'});
+			$('#first').width('100%');
+			$('#second').width('0%');
 			var poorRnd = Math.floor(Math.random() * 3) + 1;
 			if(poorRnd > 3) poorRnd = 3;
 			$('.message-box').html($('.poor_'+poorRnd).html());
 			$('.show-img').attr('src', 'img/to-do-nochannelmanager.jpg');
-		} else if(channelSelect >= 0.5 && channelSelect < 1.2){
+		} else if(channelSelect >= 0.5 && channelSelect < 1){
 			gainPercent = channelManager;
-			hospitalitySliverVal = 85;
 			$('#slider_1').addClass('medium').removeClass('large');
 			$('#noChannel').css({'color': '#9A9BA9'});
 			$('#smartConnection').css({'color': '#9A9BA9'});
 			$('#manageChannel').css({'color': '#fff'});
 			$('.show-img').attr('src', 'img/to-do-channelmanager.jpg');
+			$('#first').width('85%');
+			$('#second').width('15%');
 			var notBadRnd = Math.floor(Math.random() * 3) + 1;
 			if(notBadRnd > 3) notBadRnd = 3;
 			$('.message-box').html($('.notBad_'+notBadRnd).html());
 		} else if(channelSelect <= 2){
 			gainPercent = smartConnection;
-			hospitalitySliverVal = 100;
 			$('#hospitality').addClass('sparkle_green');
 			$('.sparkImg').show();
-			$('#slider_1').removeClass('medium').addClass('large').addClass('back');
+			$('#slider_1').removeClass('medium').addClass('large');
 			$('#noChannel').css({'color': '#9A9BA9'});
 			$('#manageChannel').css({'color': '#9A9BA9'});
 			$('#smartConnection').css({'color': '#fff'});
 			$('.show-img').attr('src', 'img/to-do-smartconnections.jpg');
+			$('#first').width('0%');
+			$('#second').width('100%');
 			var goodRnd = Math.floor(Math.random() * 3) + 1;
 			if(goodRnd > 3) goodRnd = 3;
 			$('.message-box').html($('.good_'+goodRnd).html());
@@ -168,14 +172,19 @@
 			animate: 'true',
 			stop: function(event, ui){
 				$('#txtChannelSelect').val(ui.value);
+				if(ui.value <= 0.2){
+					$('#channelManager').slider('value', 0);
+				} else if(ui.value > 0.2 && ui.value < 1){
+					$('#channelManager').slider('value', 0.5);
+				} else if(ui.value <= 2){
+					$('#channelManager').slider('value', 1.95);
+				}
 				calculateTotalHoursWithCost();
 			},
 			change: function(event, ui){
 				$('#txtChannelSelect').val(ui.value);
 			},
-			slide: function(event, ui){
-
-			}
+			
 		});
 		$('#propertyCount').find('.ui-slider-handle').html('<div class="sliderControl-label v-labelCurrent">1</div>');
 		calculateTotalHoursWithCost();
@@ -206,48 +215,21 @@
 	a:hover, a:focus {
 		text-decoration: none;
 	}
-    #slider_1{ height: 75px; border-radius: 10px; border: none !important; float:right; 
-		width: 100%;-webkit-animation-duration: 1s;
-		-webkit-animation-name: reducetime3;
-		transition-timing-function: ease-out;
+    #slider_1 {
+		background: #ed6b77; border: none !important;
+		border-radius:10px; height: 75px; float: left; width: 100%;
 	}
-	#slider_1 .ui-slider-range-min { float: right; height: 75px;}
-	#slider_1.medium .ui-slider-range-min { background: #0cccd1 no-repeat right; border-radius:10px;
-		-webkit-animation-duration: 1s;
-		-webkit-animation-name: secondDiv;
-		transition-timing-function: ease-out;
+	#first {
+		background: #ed6b77;  background: linear-gradient(-90deg,  #ed6b77, #f6a4ad); 
+		border-radius:10px; -webkit-transition: width 1s ease; transition: width 1s ease;
+		height: 75px; float: left; width: 100%;
 	}
-	#slider_1.backmedium { background: linear-gradient(-90deg,  #ed6b77, #f6a4ad); border-radius:10px;
-		-webkit-animation-duration: 1s;
-		-webkit-animation-name: reducetime4;
-		transition-timing-function: ease-out;
-		
+	#second {
+		background: #0cccd1; border-radius:10px; -webkit-transition: width 1s ease;
+		transition: width 1s ease;height: 75px; float: right; width: 0%
 	}
-	#slider_1.backmedium .ui-slider-range-min { background: #0cccd1 no-repeat right; border-radius:10px;}
-	#slider_1.large {
-		background: #ed6b77;  background: #0cccd1 url("img/sparkles_medium.png") no-repeat right; border-radius:10px; 
-		-webkit-animation-duration: 1s;
-	 -webkit-animation-name: reducetime2;
-	}
-	
-	.emptyBg{
-		background: linear-gradient(-90deg,  #ed6b77, #f6a4ad);height: 75px;border-radius: 10px;
-	}
-	@-webkit-keyframes secondDiv {
-		0% {width: 0;}
-		100% { width: 16.7%; }
-	}	
-	@-webkit-keyframes reducetime2 {
-		0% {width: 0;}
-		100% { width: 100%; }
-	}
-	@-webkit-keyframes reducetime3 {
-		0% {width: 0;}
-		100% { width: 100%; }
-	}
-	@-webkit-keyframes reducetime4 {
-		0% {width: 100%;}
-		100% { width: 0%; }
+	#slider_1.large #second {
+		background: #0cccd1 url("img/sparkles_medium.png") no-repeat right;
 	}
 	#propertyCount {border: none !important;  border-radius: 10px; background: #55586f; }
 	#propertyCount .ui-slider-range-min { background: #5cf8d8; background: linear-gradient(90deg, #5cf8d8, #26cad3);  border-radius: 10px;}
@@ -319,7 +301,6 @@
 	{
 		border: 1px solid #333;padding: 4px 12px;border-radius: 25px;margin-top: 10px;color: #333;text-decoration: none;font-size: 13px;
 	}
-	
 	.show-img {
 		cursor: pointer;
 	  -webkit-animation-name: slideInUp;
@@ -431,10 +412,9 @@
                 </div>
                 <div class="clear P10"></div>
                 <div class="col-sm-12 col-xs-12">
-                    <div class="emptyBg" style="">
 					<div id="slider_1">
-						<div class="ui-slider-range-min col-sm-2" style="padding:0"></div>
-					</div>
+						<div id="first"></div>
+						<div id="second"></div>
 					</div>
                 </div>
             </div>

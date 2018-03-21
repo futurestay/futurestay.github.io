@@ -27,6 +27,7 @@
 	var channelManager = 0.71;
 	var smartConnection = 0.11;
 	var baseOccupyRate = 70;
+	var prevValue = 0;
 	function calculateTotalHoursWithCost()
 	{
 		var channelSelected = (haSelect+bcSelect+exSelect+airSelect+1);
@@ -39,6 +40,8 @@
 		var maxHourSpentYear = totalProperties * totalHoursSpent;
 		var totalCostPerYear = maxHourSpentYear * employeeCost;
 		var gainPercent;
+		var numDelay = 10;
+		var numTime = 1000;
 		var channelSelect = $('#txtChannelSelect').val();
 		$('#hospitality').removeClass('sparkle_green');
 		$('.sparkImg').hide();
@@ -47,7 +50,7 @@
 		$('.opac').css({'opacity': 1});
 		if(channelSelect >= 0 && channelSelect < 0.5){
 			gainPercent = noTechnology;
-			$('#slider_1').removeClass('medium').removeClass('large');
+			$('#slider_1').removeClass('medium').removeClass('large').removeClass('back');
 			$('#smartConnection').css({'color': '#9A9BA9'});
 			$('#manageChannel').css({'color': '#9A9BA9'});
 			$('#noChannel').css({'color': '#fff'});
@@ -84,6 +87,7 @@
 			if(goodRnd > 3) goodRnd = 3;
 			$('.message-box').html($('.good_'+goodRnd).html());
 		}
+		
 		var adminHours = maxHourSpentYear * gainPercent;
 		var budgetSpent = totalCostPerYear * gainPercent;
 		var remainHours = Math.round(maxHourSpentYear - adminHours);
@@ -92,10 +96,21 @@
 		$('.hospitalityHours').text(addCommas(Math.round(remainHours)));
 		$('.adminCost').text(addCommas(budgetSpent.toFixed(2)));
 		$('.recoverCost').text(addCommas(recoverBudget.toFixed(2)));
+		if(prevValue = channelSelect){
+			numDelay = 10;
+			numTime = 400;
+		} else if(prevValue < channelSelect){
+			numDelay = 10;
+			numTime = 2000;
+		} else {
+			numDelay = 5;
+			numTime = 400;
+		}
 		$('.counter').counterUp({
-                delay: 10,
-                time: 1000
+			delay: numDelay,
+			time: numTime
         });
+		prevValue = channelSelect;
 	}
 	function addCommas(nStr)
 	{

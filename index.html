@@ -14,7 +14,7 @@
   <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
   <script type="text/javascript" src="js/jquery_ui/jquery-ui.min.js"></script>
   <script type="text/javascript" src="js/jquery.ui.touch-punch.min.js"></script>
-  
+  <script type="text/javascript" src="js/jquery.counterup.min.js"></script> 
   <script type="text/javascript">
 	var maxBookPerYear = 121;
 	var hrSpentWithOutTechnology = 1.236667;
@@ -92,6 +92,10 @@
 		$('.hospitalityHours').text(addCommas(Math.round(remainHours)));
 		$('.adminCost').text(addCommas(budgetSpent.toFixed(2)));
 		$('.recoverCost').text(addCommas(recoverBudget.toFixed(2)));
+		$('.counter').counterUp({
+                delay: 10,
+                time: 1000
+        });
 	}
 	function addCommas(nStr)
 	{
@@ -109,11 +113,10 @@
 	$(document).ready(function(){
 		$( ".show-img" ).hide();
 		$('body').on('click', '.message-btn', function(){
-			$( ".show-img" ).removeClass("fadeOutDown");
-			$( ".show-img" ).show();
+			$( ".show-img" ).slideDown(1000);
 		});
 		$(".show-img").click(function(){
-			$( ".show-img" ).addClass("fadeOutDown");
+			$( ".show-img" ).slideUp(1000);
 		});
 		$('#chkHomeway').change(function(){
 			if($(this).is(':checked')){
@@ -310,71 +313,15 @@
 		border: 1px solid #333;padding: 4px 12px;border-radius: 25px;margin-top: 10px;color: #333;text-decoration: none;font-size: 13px;
 	}
 	.howwork{
-		background:#fbf8c6;border-radius:15px;padding:15px 30px 19px 30px; margin-bottom:20px;
+		background:#fbf8c6;border-radius:15px;padding:15px 30px 19px 30px; margin-bottom:20px; min-height:130px;
 	}
 	.opac {
 		opacity: 0.5;
 	}
 	.show-img {
 		cursor: pointer;
-	  -webkit-animation-name: slideInUp;
-	  animation-name: slideInUp;
-	  -webkit-animation-duration: 0.5s;
-	  animation-duration: 0.5s;
-	  -webkit-animation-fill-mode: both;
-	  animation-fill-mode: both;
-	  }
-	  @-webkit-keyframes slideInUp {
-	  0% {
-	  -webkit-transform: translateY(100%);
-	  transform: translateY(100%);
-	  visibility: visible;
-	  }
-	  100% {
-	  -webkit-transform: translateY(0);
-	  transform: translateY(0);
-	  }
-	  }
-	  @keyframes slideInUp {
-	  0% {
-	  -webkit-transform: translateY(100%);
-	  transform: translateY(100%);
-	  visibility: visible;
-	  }
-	  100% {
-	  -webkit-transform: translateY(0);
-	  transform: translateY(0);
-	  }
-	  } 
-	  .fadeOutDown {
-		  -webkit-animation-name: fadeOutDown;
-		  animation-name: fadeOutDown;
-		  -webkit-animation-duration: 1s;
-		  animation-duration: 1s;
-		  -webkit-animation-fill-mode: both;
-		  animation-fill-mode: both;
-		  }
-		  @-webkit-keyframes fadeOutDown {
-		  0% {
-		  opacity: 1;
-		  }
-		  100% {
-		  opacity: 0;
-		  -webkit-transform: translate3d(0, 100%, 0);
-		  transform: translate3d(0, 100%, 0);
-		  }
-		  }
-		  @keyframes fadeOutDown {
-		  0% {
-		  opacity: 1;
-		  }
-		  100% {
-		  opacity: 0;
-		  -webkit-transform: translate3d(0, 100%, 0);
-		  transform: translate3d(0, 100%, 0);
-		  }
-		  }
-	  .slide-border::before
+	}
+	.slide-border::before
 	  {
 		content:"|";
 		position: relative;
@@ -409,7 +356,7 @@
             <div class="col-sm-12">
                 <div class="col-sm-3 col-xs-12 opac">
                     <p>Administrative</p>
-                    <h1><span class="bold adminHours">--</span></h1>
+                    <h1><span class="bold adminHours counter">--</span></h1>
                     <p><b>hour spent</b></p>
                 </div>
                 <div class="col-sm-6 col-xs-12">
@@ -420,7 +367,7 @@
                     <p class="text-right text-xs-left">Hospitality</p>
 					<div style="position:relative;">
 					<img src="img/green-sparkles.png" class="sparkImg" style="position: absolute;width: 100%;height: 100%;right: -24px; display:none;"/>
-                    <h1 class="text-right text-xs-left" id="hospitality"><span class="bold hospitalityHours">--</span></h1>
+                    <h1 class="text-right text-xs-left" id="hospitality"><span class="bold hospitalityHours counter">--</span></h1>
 					</div>
                     <p class="text-right text-xs-left"><b>hour gained</b></p>
                 </div>
@@ -446,7 +393,7 @@
                 <div class="clear P5"></div>
                 <div class="col-sm-12 col-xs-12">
                     <p class="text-gray"><b>Budget Spent</b></p>
-                    <h4><span class="bold">$<span class="adminCost">--</span></span></h4>
+                    <h4><span class="bold">$<span class="adminCost counter">--</span></span></h4>
                 </div>
             </div>
 			<div class="col-sm-6 col-xs-12 text-center">
@@ -467,7 +414,7 @@
                 <div class="clear P5"></div>
                 <div class="col-sm-12 col-xs-12">
                     <p class="text-right text-gray text-xs-left"><b>Recovered Budget</b></p>
-                    <h4 class="text-right text-xs-left"><span class="bold">$<span class="recoverCost">--</span></span></h4>
+                    <h4 class="text-right text-xs-left"><span class="bold">$<span class="recoverCost counter">--</span></span></h4>
                 </div>
             </div>
         </div>
@@ -531,17 +478,17 @@
                             <div class="col-sm-12 col-xs-12" style="">
 							<div class="col-sm-3 col-xs-4">
                                 <div class="col-sm-12 col-xs-12" style="padding: 0px;">
-                                    <p style="color:#55586f;" class="slide-border"><span class="bold"><a href="javascript:void(0)" id="noChannel">No Channel Manager</a></span></p>
+                                    <p style="color:#fff;" class="slide-border"><span class="bold"><a href="javascript:void(0)" id="noChannel" style="color:#fff;">No Channel Manager</a></span></p>
                                 </div>
                             </div>
                             <div class="col-sm-3 col-xs-4">
                                 <div class="col-sm-12 col-xs-12" style="padding: 0px;">
-                                    <p style="color:#55586f;" class="text-left slide-border-center"><span class="bold"><a href="javascript:void(0)" id="manageChannel" style="">Channel Manager</a></span></p>
+                                    <p style="color:#9A9BA9;" class="text-left slide-border-center"><span class="bold"><a href="javascript:void(0)" id="manageChannel" style="color:#9A9BA9;">Channel Manager</a></span></p>
                                 </div>
                             </div>
                             <div class="col-sm-6 col-xs-4">
                                 <div class="col-sm-12 col-xs-12" style="padding: 0px;">
-                                    <p style="color:#d6d6d6;text-align:right;"  class="slide-border-right"><span class="bold"><a href="javascript:void(0)" id="smartConnection">Smart Connections</a></span></p>
+                                    <p style="text-align:right;"  class="slide-border-right"><span class="bold"><a href="javascript:void(0)" id="smartConnection" style="color:#9A9BA9;">Smart Connections</a></span></p>
                                 </div>
                             </div>
 							</div>

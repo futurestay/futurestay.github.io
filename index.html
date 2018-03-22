@@ -67,8 +67,11 @@
 			$('#smartConnection').css({'color': '#9A9BA9'});
 			$('#manageChannel').css({'color': '#fff'});
 			$('.show-img').attr('src', 'img/to-do-channelmanager.jpg');
-			$('#first').width('85%');
-			$('#second').width('15%');
+			var blueBarPercent = 15 + (channelSelected-1) * 4;
+			var redBarPercent = 100 - blueBarPercent;
+			console.log('Percent: '+blueBarPercent.toFixed(1)+'%');
+			$('#first').width(redBarPercent.toFixed(1)+'%');
+			$('#second').width(blueBarPercent.toFixed(1)+'%');
 			var notBadRnd = Math.floor(Math.random() * 3) + 1;
 			if(notBadRnd > 3) notBadRnd = 3;
 			$('.message-box').html($('.notBad_'+notBadRnd).html());
@@ -81,8 +84,10 @@
 			$('#manageChannel').css({'color': '#9A9BA9'});
 			$('#smartConnection').css({'color': '#fff'});
 			$('.show-img').attr('src', 'img/to-do-smartconnections.jpg');
-			$('#first').width('2%');
-			$('#second').width('98%');
+			var redBarPercent = 2 + (channelSelected-1) * 2;
+			var blueBarPercent = 100 - redBarPercent;
+			$('#first').width(redBarPercent.toFixed(1)+'%');
+			$('#second').width(blueBarPercent.toFixed(1)+'%');
 			var goodRnd = Math.floor(Math.random() * 3) + 1;
 			if(goodRnd > 3) goodRnd = 3;
 			$('.message-box').html($('.good_'+goodRnd).html());
@@ -92,24 +97,29 @@
 		var budgetSpent = totalCostPerYear * gainPercent;
 		var remainHours = Math.round(maxHourSpentYear - adminHours);
 		var recoverBudget = totalCostPerYear - budgetSpent;
+		$('.adminHours.counter').data('prev',$('.adminHours:first').text());
 		$('.adminHours').text(addCommas(Math.round(adminHours)));
+		$('.hospitalityHours.counter').data('prev',$('.hospitalityHours:first').text());
 		$('.hospitalityHours').text(addCommas(Math.round(remainHours)));
+		$('.adminCost.counter').data('prev',$('.adminCost:first').text());
 		$('.adminCost').text(addCommas(budgetSpent.toFixed(2)));
+		$('.recoverCost.counter').data('prev',$('.recoverCost:first').text());
 		$('.recoverCost').text(addCommas(recoverBudget.toFixed(2)));
 		if(prevValue = channelSelect){
 			numDelay = 10;
 			numTime = 400;
 		} else if(prevValue < channelSelect){
+			numDelay = 5;
+			numTime = 5000;
+		} else {
 			numDelay = 10;
 			numTime = 2000;
-		} else {
-			numDelay = 5;
-			numTime = 400;
 		}
 		$('.counter').counterUp({
 			delay: numDelay,
 			time: numTime
         });
+		
 		prevValue = channelSelect;
 	}
 	function addCommas(nStr)
@@ -242,7 +252,7 @@
 	}
 	#first {
 		background: #ed6b77;  background: linear-gradient(-90deg,  #ed6b77, #f6a4ad); 
-		border-radius:10px; -webkit-transition: width 1s ease; transition: width 1s ease;
+		border-radius:10px; -webkit-transition: width 0.6s ease; transition: width 0.6s ease;
 		height: 75px; float: left; width: 100%;
 	}
 	
@@ -251,8 +261,8 @@
 	}
 	
 	#second {
-		background: #0cccd1;  border-radius: 0px 10px 10px 0px;-webkit-transition: width 1s ease;
-		transition: width 1s ease;height: 75px; float: right; width: 0%
+		background: #0cccd1;  border-radius: 0px 10px 10px 0px;-webkit-transition: width 0.6s ease;
+		transition: width 0.6s ease;height: 75px; float: right; width: 0%
 	}
 	#slider_1.large #second {
 		background: #0cccd1 url("img/sparkles_medium.png") no-repeat right;

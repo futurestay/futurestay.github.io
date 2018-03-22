@@ -69,7 +69,6 @@
 			$('.show-img').attr('src', 'img/to-do-channelmanager.jpg');
 			var blueBarPercent = 15 + (channelSelected-1) * 4;
 			var redBarPercent = 100 - blueBarPercent;
-			console.log('Percent: '+blueBarPercent.toFixed(1)+'%');
 			$('#first').width(redBarPercent.toFixed(1)+'%');
 			$('#second').width(blueBarPercent.toFixed(1)+'%');
 			var notBadRnd = Math.floor(Math.random() * 3) + 1;
@@ -119,7 +118,6 @@
 			delay: numDelay,
 			time: numTime
         });
-		
 		prevValue = channelSelect;
 	}
 	function addCommas(nStr)

@@ -136,10 +136,11 @@
 	$(document).ready(function(){
 		$( ".show-img" ).hide();
 		$('body').on('click', '.message-btn', function(){
-			$( ".show-img" ).slideDown(1000);
+			$( ".show-img" ).removeClass("fadeOutDown").show();
 		});
 		$(".show-img").click(function(){
-			$( ".show-img" ).slideUp(1000);
+			$(".show-img").addClass("fadeOutDown");
+			//setTimeout(function(){$(".show-img").hide()}, 900);
 		});
 		$('#chkHomeway').change(function(){
 			if($(this).is(':checked')){
@@ -312,7 +313,64 @@
 		opacity: 0.5;
 	}
 	.show-img {
-		cursor: pointer;
+	  cursor: pointer;
+	  -webkit-animation-name: slideInUp;
+	  animation-name: slideInUp;
+	  -webkit-animation-duration: 0.5s;
+	  animation-duration: 0.5s;
+	  -webkit-animation-fill-mode: both;
+	  animation-fill-mode: both;
+	  display: none;
+	}
+	@-webkit-keyframes slideInUp {
+	  0% {
+	  -webkit-transform: translateY(100%);
+	  transform: translateY(100%);
+	  visibility: visible;
+	  }
+	  100% {
+	  -webkit-transform: translateY(0);
+	  transform: translateY(0);
+	  }
+	}
+	@keyframes slideInUp {
+	  0% {
+	  -webkit-transform: translateY(100%);
+	  transform: translateY(100%);
+	  visibility: visible;
+	  }
+	  100% {
+	  -webkit-transform: translateY(0);
+	  transform: translateY(0);
+	  }
+	} 
+	.fadeOutDown {
+	  -webkit-animation-name: fadeOutDown;
+	  animation-name: fadeOutDown;
+	  -webkit-animation-duration: 1s;
+	  animation-duration: 1s;
+	  -webkit-animation-fill-mode: both;
+	  animation-fill-mode: both;
+	}
+	@-webkit-keyframes fadeOutDown {
+	  0% {
+	  opacity: 1;
+	  }
+	  100% {
+	  opacity: 0;
+	  -webkit-transform: translate3d(0, 100%, 0);
+	  transform: translate3d(0, 100%, 0);
+	  }
+	}
+	@keyframes fadeOutDown {
+	  0% {
+	  opacity: 1;
+	  }
+	  100% {
+	  opacity: 0;
+	  -webkit-transform: translate3d(0, 100%, 0);
+	  transform: translate3d(0, 100%, 0);
+	  }
 	}
 	.slide-border::before
 	  {
@@ -343,7 +401,7 @@
 <form method="post" action="post.php">
 <input type="hidden" name="txtPropertyCount" id="txtPropertyCount" value="1" />
 <input type="hidden" name="txtChannelSelect" id="txtChannelSelect" value="0" />
-<div class="container">
+<div class="container" style="overflow:hidden">
     <div class="col-sm-8 col-sm-offset-1" style="background:#fff;border-radius:20px;margin-top:60px;padding:40px;">
         <div class="row">
             <div class="col-sm-12">

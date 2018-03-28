@@ -132,6 +132,21 @@
 		}
 		return x1 + x2;
 	}
+	function createArray(start, end, step, suffix='')
+	{
+		var tmpArr = [];
+		for(key = start; key <= end; key = key + step){
+			tmpArr.push(key + suffix);
+		}
+		return tmpArr;
+	}
+	
+	 var firstArr = createArray(1, 100, 1);
+	 var secondArr = createArray(110, 200, 10);
+	 var thirdArr = createArray(225, 500, 25);
+	 var fourthArr = createArray(600, 900, 100);
+	 var fifthArr = createArray(1, 10, 1, 'K');
+	 var valuesArr = firstArr.concat(secondArr).concat(thirdArr).concat(fourthArr).concat(fifthArr);
 
 	$(document).ready(function(){
 		$( ".show-img" ).hide();
@@ -175,24 +190,24 @@
 			calculateTotalHoursWithCost();
 		});
 		$('#propertyCount').slider({
-			min: 1,
-			max: 100,
+			min: 0,
+			max: valuesArr.length-1,
+			value: 0,
 			step: 1,
-			value: 1,
 			animate: 'true',
 			range: "min",
 			stop: function(event, ui){
-				$('#txtPropertyCount').val(ui.value);
+				var value = numValue = valuesArr[ui.value];
+				if(isNaN(numValue)){
+					numValue = parseInt(numValue, 10) * 1000;
+				}
+				$('#txtPropertyCount').val(numValue);
 				calculateTotalHoursWithCost();
-				$(this).find('.ui-slider-handle').html('<div class="sliderControl-label v-labelCurrent">'+ui.value+'</div>');
+				$(this).find('.ui-slider-handle').html('<div class="sliderControl-label v-labelCurrent">'+value+'</div>');
 			},
-			change: function(event, ui){
-				$('#txtPropertyCount').val(ui.value);
-				$(this).find('.ui-slider-handle').html('<div class="sliderControl-label v-labelCurrent">'+ui.value+'</div>');
-			}, 
 			slide: function(event, ui){
-				$('#txtPropertyCount').val(ui.value);
-				$(this).find('.ui-slider-handle').html('<div class="sliderControl-label v-labelCurrent">'+ui.value+'</div>');
+				var value = valuesArr[ui.value];
+				$(this).find('.ui-slider-handle').html('<div class="sliderControl-label v-labelCurrent">'+value+'</div>');
 			}, 
 		});
 		$('#channelManager').slider({
@@ -531,9 +546,9 @@
                         </div>
                         <div class="clear P10"></div>
                         <div class="row">
-                            <div class="col-sm-12 col-xs-12" style="padding-left:28px;">
-							<div class="col-sm-3 col-xs-4" style="padding-left:0px">
-                                <div class="col-sm-12 col-xs-12" style="padding: 0px;">
+                            <div class="col-sm-12 col-xs-12" style="padding-left:25px;">
+							<div class="col-sm-3 col-xs-4" style="padding-left:5px; padding-right:0px">
+                                <div class="col-sm-12 col-xs-12" style="padding:0px;">
                                     <p style="color:#fff;" class="slide-border"><span class="bold"><a href="javascript:void(0)" id="noChannel" style="color:#fff;">No Channel Manager</a></span></p>
                                 </div>
                             </div>

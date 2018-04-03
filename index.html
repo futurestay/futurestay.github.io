@@ -48,6 +48,7 @@
 		$('.howwork').hide();
 		$('.message-box').show();
 		$('.opac').css({'opacity': 1});
+		$('.show-img1 p').hide();
 		if(channelSelect >= 0 && channelSelect < 0.5){
 			gainPercent = noTechnology;
 			$('#slider_1').removeClass('medium').removeClass('large').removeClass('back');
@@ -83,6 +84,7 @@
 			$('#manageChannel').css({'color': '#9A9BA9'});
 			$('#smartConnection').css({'color': '#fff'});
 			$('.show-img').attr('src', 'img/to-do-smartconnections.jpg');
+			$('.show-img1 p').show();
 			var redBarPercent = 2 + (channelSelected-1) * 2;
 			var blueBarPercent = 100 - redBarPercent;
 			$('#first').width(redBarPercent.toFixed(1)+'%');
@@ -90,6 +92,7 @@
 			var goodRnd = Math.floor(Math.random() * 3) + 1;
 			if(goodRnd > 3) goodRnd = 3;
 			$('.message-box').html($('.good_'+goodRnd).html());
+			
 		}
 		
 		var adminHours = maxHourSpentYear * gainPercent;
@@ -149,12 +152,14 @@
 	 var valuesArr = firstArr.concat(secondArr).concat(thirdArr).concat(fourthArr).concat(fifthArr);
 
 	$(document).ready(function(){
-		$( ".show-img" ).hide();
+		$( ".show-img1" ).hide();
 		$('body').on('click', '.message-btn', function(){
-			$( ".show-img" ).removeClass("fadeOutDown").show();
+			$( ".show-img1" ).removeClass("fadeOutDown").show();
+			$( ".show-img1 .show-img" ).removeClass("fadeOutDown").show();
 		});
-		$(".show-img").click(function(){
-			$(".show-img").addClass("fadeOutDown");
+		$(".show-img1").click(function(){
+			$(".show-img1").addClass("fadeOutDown");
+			$(".show-img1 .show-img").addClass("fadeOutDown");
 			//setTimeout(function(){$(".show-img").hide()}, 900);
 		});
 		$('#chkHomeway').change(function(){
@@ -332,7 +337,17 @@
 	.opac {
 		opacity: 0.5;
 	}
-	.show-img {
+	
+	.show-img{
+	  cursor: pointer;
+	  -webkit-animation-name: slideInUp;
+	  animation-name: slideInUp;
+	  -webkit-animation-duration: 0.5s;
+	  animation-duration: 0.5s;
+	  -webkit-animation-fill-mode: both;
+	  animation-fill-mode: both;
+	}
+	.show-img1 {
 	  cursor: pointer;
 	  -webkit-animation-name: slideInUp;
 	  animation-name: slideInUp;
@@ -417,7 +432,7 @@
 	  }
   </style>
 </head>
-<body style="background:#fafafa;">
+<body style="background:#fff;">
 <form method="post" action="post.php">
 <input type="hidden" name="txtPropertyCount" id="txtPropertyCount" value="1" />
 <input type="hidden" name="txtChannelSelect" id="txtChannelSelect" value="0" />
@@ -453,8 +468,12 @@
         </div>
         <div class="clear P10"></div>
         <div class="row">
-			<div class="col-sm-12 col-xs-12 text-center">
-					<img src="img/to-do-channelmanager.jpg" width="100%" class="show-img" style="position: absolute;top: 0;left: 0;z-index:9;"/>
+			<div class="col-sm-12 col-xs-12 text-center" style="z-index:9;">
+				<div class="show-img1"  style="position: absolute;top: 0;left: 0;z-index:9;">
+				<img src="img/to-do-channelmanager.jpg" width="100%" class="show-img"/>
+				<p style="position: absolute;bottom: 17px;right: 30px;"><a href="https://www.futurestay.com/read/news/announcements/futurestay-smart-connections/" 
+				style="color: #bdb350; font-size: 14px;text-decoration: underline;" target="_blank">Learn more about Smart Connections</a></p>
+				</div>
 			</div>
 			<div class="clear"></div>
             <div class="col-sm-3 col-xs-12 opac">

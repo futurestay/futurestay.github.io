@@ -28,6 +28,8 @@
 	var smartConnection = 0.11;
 	var baseOccupyRate = 70;
 	var prevValue = 0;
+	var channel_ui_value = 0;
+	var channel_ui_value_old = 0;
 	function calculateTotalHoursWithCost()
 	{
 		var channelSelected = (haSelect+bcSelect+exSelect+airSelect+1);
@@ -143,6 +145,21 @@
 		}
 		return tmpArr;
 	}
+	function makeSliderTransist()
+	{
+		if(channel_ui_value_old!=channel_ui_value)
+		{
+			channel_ui_value_old=channel_ui_value;
+			if(channel_ui_value <= 0.25){
+				$('#channelManager').slider('value', 0).removeClass('complete');
+			} else if(channel_ui_value > 0.25 && channel_ui_value < 1){
+				$('#channelManager').slider('value', 0.55).removeClass('complete');
+			} else if(channel_ui_value <= 2){
+				$('#channelManager').slider('value', 1.95).addClass('complete');
+			}
+			calculateTotalHoursWithCost();
+		}
+	}
 	
 	 var firstArr = createArray(1, 100, 1);
 	 var secondArr = createArray(110, 200, 10);
@@ -219,33 +236,31 @@
 			min: 0,
 			max: 2,
 			step: 0.05,
-			animate: 'slow',
+			animate: 'true',
 			range: "min",
 			stop: function(event, ui){
 				$('#txtChannelSelect').val(ui.value);
-				if(ui.value <= 0.25){
-					$('#channelManager').slider('value', 0).removeClass('complete');
-				} else if(ui.value > 0.25 && ui.value < 1){
-					$('#channelManager').slider('value', 0.55).removeClass('complete');
-				} else if(ui.value <= 2){
-					$('#channelManager').slider('value', 1.95).addClass('complete');
-				}
-				calculateTotalHoursWithCost();
+				channel_ui_value = ui.value;
+				setTimeout(makeSliderTransist, 300);
 			},
 			change: function(event, ui){
 				$('#txtChannelSelect').val(ui.value);
-				/*
-				if(ui.value <= 0.25){
-					$('#channelManager').slider('value', 0).removeClass('complete');
-				} else if(ui.value > 0.25 && ui.value < 1){
-					$('#channelManager').slider('value', 0.55).removeClass('complete');
-				} else if(ui.value <= 2){
-					$('#channelManager').slider('value', 1.95).addClass('complete');
-				}*/
 			},
-			
-			
 		});
+		/*setInterval(function(){
+			if(channel_ui_value_old!=channel_ui_value)
+			{
+				channel_ui_value_old=channel_ui_value;
+				if(channel_ui_value <= 0.25){
+					$('#channelManager').slider('value', 0).removeClass('complete');
+				} else if(channel_ui_value > 0.25 && channel_ui_value < 1){
+					$('#channelManager').slider('value', 0.55).removeClass('complete');
+				} else if(channel_ui_value <= 2){
+					$('#channelManager').slider('value', 1.95).addClass('complete');
+				}
+				calculateTotalHoursWithCost();
+			}
+		}, 700);*/
 		$('#propertyCount').find('.ui-slider-handle').html('<div class="sliderControl-label v-labelCurrent">1</div>');
 		//calculateTotalHoursWithCost();
 		$('#noChannel').click(function(){
@@ -446,7 +461,7 @@
 <input type="hidden" name="txtPropertyCount" id="txtPropertyCount" value="1" />
 <input type="hidden" name="txtChannelSelect" id="txtChannelSelect" value="0" />
 <div class="container" style="overflow:hidden;margin:0;padding:0;max-width:760px;">
-    <div class="col-sm-12" style="background:#fff;padding:35px;">
+    <div class="col-sm-12" style="background:#fff;padding:40px;">
         <div class="row">
             <div class="col-sm-12">
                 <div class="col-sm-3 col-xs-12 opac">
